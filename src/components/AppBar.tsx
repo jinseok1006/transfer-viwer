@@ -21,13 +21,7 @@ export default function AppBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Box
-        maxW="md"
-        mx="auto"
-        borderBottom="1px solid"
-        borderBottomColor="gray.100"
-        mb={3}
-      >
+      <Box maxW="md" mx="auto" mb={3} bgColor="white" boxShadow="xs">
         <Flex justify="space-between" alignItems="center" py={2} px={6}>
           <Heading fontWeight="bold" size="md">
             전북대 전학/전과 현황

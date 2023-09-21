@@ -1,39 +1,39 @@
 import { useEffect } from 'react';
-import { Container, Stack } from '@chakra-ui/react';
+import { Container, Stack, Box } from '@chakra-ui/react';
 import { create } from 'zustand';
 import axios from 'axios';
 
-import FilterContainer from './components/Filter';
+import Filter from './components/Filter';
 import AppBar from './components/AppBar';
-import Cards, { IStatics } from './components/StaticsCard';
+import StatsCardsContainer, { IStat } from './components/StatsCards';
 
-interface IStaticState {
+interface IStatsState {
   loading: boolean;
-  statics: null | IStatics[][];
+  stats: null | IStat[][];
   error: any;
   load: () => void;
   success: (data: any) => void;
   fail: (err: any) => void;
 }
 
-export const useStaticsStore = create<IStaticState>()((set) => ({
+export const useStatsStore = create<IStatsState>()((set) => ({
   loading: false,
-  statics: null,
+  stats: null,
   error: null,
-  load: () => set({ loading: true, statics: null, error: null }),
-  success: (data) => set({ loading: false, statics: data, error: null }),
-  fail: (err) => set({ loading: false, statics: null, error: err }),
+  load: () => set({ loading: true, stats: null, error: null }),
+  success: (data) => set({ loading: false, stats: data, error: null }),
+  fail: (err) => set({ loading: false, stats: null, error: err }),
 }));
 
 function App() {
-  const { load, success, fail } = useStaticsStore();
+  const { load, success, fail } = useStatsStore();
 
   useEffect(() => {
-    async function fetchStatics() {
+    async function fetchStats() {
       try {
         load();
         const response = await axios.get(
-          `${window.location.protocol}//${window.location.host}/statics.json`
+          `${window.location.protocol}//${window.location.host}/stats.json`
         );
         success(response.data);
       } catch (err) {
@@ -41,16 +41,18 @@ function App() {
       }
     }
 
-    fetchStatics();
+    fetchStats();
   }, []);
 
+  // TODO: 백그라운드 컬러 회색으로 clear
   return (
     <>
       <AppBar />
-      <Container maxW="md" pt={1}>
-        <Stack mt={2} direction="column" spacing={4}>
-          <FilterContainer />
-          <Cards />
+      <Container maxW="md">
+        <Stack mt={2} direction="column" spacing={4} minH="800px">
+          <Filter />
+          <StatsCardsContainer />
+          <Box h="50px" />
         </Stack>
       </Container>
     </>

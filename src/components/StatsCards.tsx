@@ -18,11 +18,12 @@ import {
 import collegeIndex from '../collegeIndex';
 
 import { useFilterStore } from './Filter';
-import { useStaticsStore } from '../App';
+import { useStatsStore } from '../App';
 
-export interface IStatics {
+// 학과 1개의 데이터
+export interface IStat {
   division: string;
-  statics: {
+  yearsData: {
     [year: number]: {
       capacity: number;
       applicants: number;
@@ -31,14 +32,14 @@ export interface IStatics {
   };
 }
 
-export default function Cards() {
+export default function StatsCardsContainer() {
   const { hasAnyFilterFalse } = useFilterStore();
-  const { loading, statics, error } = useStaticsStore();
+  const { loading, stats, error } = useStatsStore();
   if (error) {
     <div>에러발생</div>;
   }
 
-  if (loading || !statics)
+  if (loading || !stats)
     return (
       <Center>
         <Spinner />
@@ -53,64 +54,56 @@ export default function Cards() {
     );
   }
 
-  return <StaticsCardContainer />;
+  return <StatCardsContainer />;
 }
 
-function StaticsCardContainer() {
-  const statics = useStaticsStore((state) => state.statics);
+function StatCardsContainer() {
+  const filteredStats: StatCardProps[] = [];
+  const stats = useStatsStore((state) => state.stats);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
-  const filteredStatics: (IStatics & { grade: number })[] = [];
-  const filteredColleges = collegeFilter
+  const activeColleges = collegeFilter
     .filter((col) => col.isActived)
     .map((col) => col.college);
-  const filteredDivisions = collegeIndex
-    .filter((col) => filteredColleges.includes(col.college))
+  const activeDivisions = collegeIndex
+    .filter((col) => activeColleges.includes(col.college))
     .reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
-  if (!statics) return;
+  if (!stats) return;
 
-  statics.forEach((stat, grade) => {
+  stats.forEach((gradeStats, grade) => {
     if (!gradeFilter[grade]) return;
 
-    stat.forEach((s) => {
-      if (!filteredDivisions.includes(s.division)) return;
-      if (!s.division.includes(searchFilter)) return;
-      filteredStatics.push({ ...s, grade });
+    gradeStats.forEach((individualStat) => {
+      if (!activeDivisions.includes(individualStat.division)) return;
+      if (!individualStat.division.includes(searchFilter.toUpperCase())) return;
+      filteredStats.push({ ...individualStat, grade });
     });
   });
 
-  console.log(filteredStatics);
+  console.log(filteredStats);
 
-  return filteredStatics.map((stat) => (
-    <StaticsCard
+  return filteredStats.map((stat) => (
+    <StatCard
       key={`${stat.division}_${stat.grade}`}
       division={stat.division}
-      statics={stat.statics}
+      yearsData={stat.yearsData}
       grade={stat.grade}
     />
   ));
 }
 
-interface StaticsCardProps {
-  division: string;
+interface StatCardProps extends IStat {
   grade: number;
-  statics: {
-    [year: number]: {
-      capacity: number;
-      applicants: number;
-      rate: number;
-    };
-  };
 }
 
-function StaticsCard({ division, grade, statics }: StaticsCardProps) {
+function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
   const tableStyles = {
     'td, th': {
       textAlign: 'center',
     },
   };
-
+  // TODO: viewport 하단에 닿으면 카드 하단 margin이 없음 clear
   return (
-    <Card backgroundColor="">
+    <Card>
       <CardHeader>
         <Heading size="md" textAlign="center">
           {division}({grade + 2}학년)
