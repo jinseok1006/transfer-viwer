@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -65,8 +64,8 @@ export const useFilterStore = create<IFilterState>()((set, get) => ({
       })),
     }));
   },
-  changeSearch: (e: React.FormEvent) => {
-    set({ searchFilter: (e.target as HTMLInputElement).value });
+  changeSearch: (event) => {
+    set({ searchFilter: (event.target as HTMLInputElement).value });
   },
   hasAnyFilterFalse: () =>
     get().collegeFilter.every((college) => college.isActived === false) ||
