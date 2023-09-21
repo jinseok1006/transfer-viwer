@@ -11,10 +11,6 @@ import {
 } from '@chakra-ui/react';
 import { create } from 'zustand';
 
-export default function FilterContainer() {
-  return <Filter />;
-}
-
 const COLLEGES = [
   '간호대학',
   '공과대학',
@@ -81,7 +77,7 @@ export const useFilterStore = create<IFilterState>()((set, get) => ({
     }),
 }));
 
-function Filter() {
+export default function Filter() {
   const {
     gradeFilter,
     collegeFilter,
@@ -133,7 +129,7 @@ function Filter() {
           </Box>
           <Box>
             <Heading size="sm" mb={3}>
-              {/* TODO: 이 새끼 대소문자 가림 */}
+              {/* TODO: 이 새끼 대소문자 가림 clear */}
               검색
             </Heading>
             <Input
