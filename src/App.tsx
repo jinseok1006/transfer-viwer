@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Container, Stack } from '@chakra-ui/react';
+import { Container, Stack, Box } from '@chakra-ui/react';
 import { create } from 'zustand';
 import axios from 'axios';
 
@@ -44,13 +44,15 @@ function App() {
     fetchStatics();
   }, []);
 
+  // TODO: 백그라운드 컬러 회색으로 clear
   return (
     <>
       <AppBar />
-      <Container maxW="md" pt={1}>
-        <Stack mt={2} direction="column" spacing={4}>
+      <Container maxW="md">
+        <Stack mt={2} direction="column" spacing={4} minH="800px">
           <FilterContainer />
           <Cards />
+          <Box h="50px" />
         </Stack>
       </Container>
     </>

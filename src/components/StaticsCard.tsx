@@ -73,7 +73,7 @@ function StaticsCardContainer() {
 
     stat.forEach((s) => {
       if (!filteredDivisions.includes(s.division)) return;
-      if (!s.division.includes(searchFilter)) return;
+      if (!s.division.includes(searchFilter.toUpperCase())) return;
       filteredStatics.push({ ...s, grade });
     });
   });
@@ -108,9 +108,9 @@ function StaticsCard({ division, grade, statics }: StaticsCardProps) {
       textAlign: 'center',
     },
   };
-
+  // TODO: viewport 하단에 닿으면 카드 하단 margin이 없음 clear
   return (
-    <Card backgroundColor="">
+    <Card>
       <CardHeader>
         <Heading size="md" textAlign="center">
           {division}({grade + 2}학년)

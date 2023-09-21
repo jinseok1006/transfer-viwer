@@ -133,6 +133,7 @@ function Filter() {
           </Box>
           <Box>
             <Heading size="sm" mb={3}>
+              {/* TODO: 이 새끼 대소문자 가림 */}
               검색
             </Heading>
             <Input
