@@ -41,15 +41,21 @@ export default function AppBar() {
           <DrawerHeader>Misc</DrawerHeader>
           <Divider />
           <DrawerBody>
-            <Heading size="md">허가 중 특이사항</Heading>
-            <p>간호학과 전과허용</p>
-            <p>수의대 전과허용</p>
-            <p>수학교육과 일부허용</p>
-            <p>2022년부터 4학년 전과허용</p>
-            <Heading size="md">사전 시험</Heading>
-            <p>컴퓨터공학과 지필시험</p>
-            <Heading size="md">추가사항</Heading>
-            <p>복수/부 전공 추가 예정(일정 미정)</p>
+            <Box>
+              <Heading size="md">허가 중 특이사항</Heading>
+              <Text>간호학과 전과허용</Text>
+              <Text>수의대 전과허용</Text>
+              <Text>수학교육과 일부허용</Text>
+              <Text>2022년부터 4학년 전과허용</Text>
+            </Box>
+            <Box>
+              <Heading size="md">사전 시험</Heading>
+              <Text>컴퓨터공학과 지필시험</Text>
+            </Box>
+            <Box>
+              <Heading size="md">추가사항</Heading>
+              <Text>복수/부 전공 추가 예정(일정 미정)</Text>
+            </Box>
           </DrawerBody>
           <Divider />
           <DrawerFooter display="block" color="gray.500">

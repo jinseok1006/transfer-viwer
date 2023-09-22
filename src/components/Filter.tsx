@@ -27,52 +27,31 @@ const COLLEGES = [
   '환경생명자원대학',
   '본부',
 ] as const;
-const GRADES = [2, 3, 4] as const;
+const GRADES = [0, 1, 2] as const;
 
 interface IFilterState {
-  gradeFilter: boolean[];
-  collegeFilter: { college: string; isActived: boolean }[];
+  gradeFilter: number;
+  collegeFilter: string;
   searchFilter: string;
-  toggleGrade: (idx: number) => void;
-  toggleCollege: (event: React.MouseEvent) => void;
-  hasAnyFilterFalse: () => boolean;
+  toggleGrade: (grade: number) => void;
+  toggleCollege: (college: string) => void;
   resetFilter: () => void;
   changeSearch: (event: React.FormEvent) => void;
 }
 
-export const useFilterStore = create<IFilterState>()((set, get) => ({
-  gradeFilter: [true, false, false],
-  collegeFilter: COLLEGES.map((col) => ({ college: col, isActived: false })),
+export const useFilterStore = create<IFilterState>()((set) => ({
+  gradeFilter: 0,
+  collegeFilter: '공과대학',
   searchFilter: '',
-  toggleGrade: (inputGrade: number) =>
-    set((state) => ({
-      gradeFilter: state.gradeFilter.map((value, grade) =>
-        grade === inputGrade ? !value : value
-      ),
-    })),
-  toggleCollege: (event) => {
-    const { name } = event.target as HTMLButtonElement;
-    set((state) => ({
-      collegeFilter: state.collegeFilter.map((college) => ({
-        college: college.college,
-        isActived:
-          college.college === name ? !college.isActived : college.isActived,
-      })),
-    }));
-  },
+  toggleGrade: (inputGrade) => set({ gradeFilter: inputGrade }),
+  toggleCollege: (inputCollege) => set({ collegeFilter: inputCollege }),
   changeSearch: (event) => {
     set({ searchFilter: (event.target as HTMLInputElement).value });
   },
-  hasAnyFilterFalse: () =>
-    get().collegeFilter.every((college) => college.isActived === false) ||
-    get().gradeFilter.every((value) => value === false),
   resetFilter: () =>
     set({
-      collegeFilter: COLLEGES.map((col) => ({
-        college: col,
-        isActived: false,
-      })),
-      gradeFilter: [true, false, false],
+      collegeFilter: '공과대학',
+      gradeFilter: 0,
       searchFilter: '',
     }),
 }));
@@ -97,15 +76,15 @@ export default function Filter() {
               대학
             </Heading>
             <Wrap gap={4}>
-              {collegeFilter.map((col) => (
+              {COLLEGES.map((col) => (
                 <Button
                   size="sm"
-                  name={col.college}
-                  key={col.college}
-                  isActive={col.isActived}
-                  onClick={toggleCollege}
+                  name={col}
+                  key={col}
+                  isActive={col === collegeFilter}
+                  onClick={() => toggleCollege(col)}
                 >
-                  {col.college}
+                  {col}
                 </Button>
               ))}
             </Wrap>
@@ -115,14 +94,14 @@ export default function Filter() {
               학년
             </Heading>
             <Wrap gap={4}>
-              {GRADES.map((grade, i) => (
+              {GRADES.map((grade) => (
                 <Button
                   size="sm"
-                  onClick={() => toggleGrade(i)}
-                  key={i}
-                  isActive={gradeFilter[i]}
+                  onClick={() => toggleGrade(grade)}
+                  key={grade}
+                  isActive={grade === gradeFilter}
                 >
-                  {grade}학년
+                  {grade + 2}학년
                 </Button>
               ))}
             </Wrap>
