@@ -120,7 +120,7 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
                   <Td>{year}</Td>
                   <Td>{statics[parseInt(year)].applicants}</Td>
                   <Td>{statics[parseInt(year)].capacity}</Td>
-                  <Td>{statics[parseInt(year)].rate}%</Td>
+                  <Td>{statics[parseInt(year)].rate}</Td>
                 </Tr>
               ))}
             </Tbody>
