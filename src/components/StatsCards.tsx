@@ -2,7 +2,6 @@ import {
   Card,
   Center,
   Spinner,
-  Text,
   CardHeader,
   CardBody,
   Heading,
@@ -33,7 +32,6 @@ export interface IStat {
 }
 
 export default function StatsCardsContainer() {
-  const { hasAnyFilterFalse } = useFilterStore();
   const { loading, stats, error } = useStatsStore();
   if (error) {
     <div>에러발생</div>;
@@ -46,31 +44,25 @@ export default function StatsCardsContainer() {
       </Center>
     );
 
-  if (hasAnyFilterFalse()) {
-    return (
-      <Center>
-        <Text fontWeight="bold">태그별 필터를 최소 하나이상 선택해주세요.</Text>
-      </Center>
-    );
-  }
-
   return <StatCardsContainer />;
 }
 
 function StatCardsContainer() {
+  // TODO: 학년은 0,1,2중하나만 선택할 수 있게 변경 clear
   const filteredStats: StatCardProps[] = [];
   const stats = useStatsStore((state) => state.stats);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
-  const activeColleges = collegeFilter
-    .filter((col) => col.isActived)
-    .map((col) => col.college);
+  // const activeColleges = collegeFilter
+  //   .filter((col) => col.isActived)
+  //   .map((col) => col.college);
+
   const activeDivisions = collegeIndex
-    .filter((col) => activeColleges.includes(col.college))
+    .filter((col) => collegeFilter.includes(col.college))
     .reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
   if (!stats) return;
 
   stats.forEach((gradeStats, grade) => {
-    if (!gradeFilter[grade]) return;
+    if (grade !== gradeFilter) return;
 
     gradeStats.forEach((individualStat) => {
       if (!activeDivisions.includes(individualStat.division)) return;
@@ -90,6 +82,7 @@ function StatCardsContainer() {
     />
   ));
 }
+// TODO: viewport하단에 닿으면 queue에 있던것을 몇개 빼내서 렌더링(무한스크롤)
 
 interface StatCardProps extends IStat {
   grade: number;
