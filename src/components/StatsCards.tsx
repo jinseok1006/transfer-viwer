@@ -14,22 +14,12 @@ import {
   Tbody,
   Td,
 } from '@chakra-ui/react';
-import collegeIndex from '../collegeIndex';
+import { COLLEGE_INDEX } from '../collegeIndex';
 
 import { useFilterStore } from './Filter';
-import { useStatsStore } from '../App';
+import { useStatsStore, IStat } from '../store';
 
 // 학과 1개의 데이터
-export interface IStat {
-  division: string;
-  yearsData: {
-    [year: number]: {
-      capacity: number;
-      applicants: number;
-      rate: number;
-    };
-  };
-}
 
 export default function StatsCardsContainer() {
   const { loading, stats, error } = useStatsStore();
@@ -48,7 +38,6 @@ export default function StatsCardsContainer() {
 }
 
 function StatCardsContainer() {
-  // TODO: 학년은 0,1,2중하나만 선택할 수 있게 변경 clear
   const filteredStats: StatCardProps[] = [];
   const stats = useStatsStore((state) => state.stats);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
@@ -56,9 +45,9 @@ function StatCardsContainer() {
   //   .filter((col) => col.isActived)
   //   .map((col) => col.college);
 
-  const activeDivisions = collegeIndex
-    .filter((col) => collegeFilter.includes(col.college))
-    .reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
+  const activeDivisions = COLLEGE_INDEX.filter((col) =>
+    collegeFilter.includes(col.college)
+  ).reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
   if (!stats) return;
 
   stats.forEach((gradeStats, grade) => {
@@ -71,7 +60,10 @@ function StatCardsContainer() {
     });
   });
 
-  console.log(filteredStats);
+  // debug
+  // console.log(filteredStats);
+
+  // TODO: 만약 filteredStats가 없으면 올바른 검색어가 아니라는 안내 문구 추가.
 
   return filteredStats.map((stat) => (
     <StatCard
@@ -94,7 +86,7 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
       textAlign: 'center',
     },
   };
-  // TODO: viewport 하단에 닿으면 카드 하단 margin이 없음 clear
+
   return (
     <Card>
       <CardHeader>

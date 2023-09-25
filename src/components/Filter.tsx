@@ -11,22 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { create } from 'zustand';
 
-const COLLEGES = [
-  '간호대학',
-  '공과대학',
-  '글로벌융합대학',
-  '농업생명과학대학',
-  '사범대학',
-  '사회과학대학',
-  '상과대학',
-  '생활과학대학',
-  '수의과대학',
-  '예술대학',
-  '인문대학',
-  '자연과학대학',
-  '환경생명자원대학',
-  '본부',
-] as const;
+import { COLLEGES } from '../collegeIndex';
+
 const GRADES = [0, 1, 2] as const;
 
 interface IFilterState {
@@ -55,6 +41,8 @@ export const useFilterStore = create<IFilterState>()((set) => ({
       searchFilter: '',
     }),
 }));
+
+// TODO: 초기화 버튼 input 태그만
 
 export default function Filter() {
   const {
