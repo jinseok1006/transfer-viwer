@@ -1,9 +1,12 @@
 import { Heading, Text, Stack, Flex, Link } from '@chakra-ui/react';
-
 import { Link as RouterLink } from 'react-router-dom';
+
+import Meta from '../components/Meta';
+
 export default function Disclaimer() {
   return (
     <>
+      <Meta title="면책 조항" />
       <Heading size="md" my={4}>
         면책 조항
       </Heading>

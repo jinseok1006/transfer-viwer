@@ -14,9 +14,10 @@ import {
   DrawerBody,
   Text,
   Link,
+  Stack,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { HamburgerIcon, LinkIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 
 export default function AppBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,7 +25,7 @@ export default function AppBar() {
     <>
       <Box maxW="md" mx="auto" mb={3} bgColor="white" boxShadow="xs">
         <Flex justify="space-between" alignItems="center" py={2} px={6}>
-          <Heading fontWeight="bold" size="md">
+          <Heading fontWeight="bold" size="md" as={RouterLink} to="/">
             전북대 전학/전과 현황
           </Heading>
           <Spacer />
@@ -54,24 +55,26 @@ function MyDrawer({ isOpen, onClose }: MyDrawerProps) {
         <DrawerHeader>Misc</DrawerHeader>
         <Divider />
         <DrawerBody>
-          <Box>
-            <Heading size="md">특이사항</Heading>
-            <Text>간호학과 전과허용</Text>
-            <Text>수의대 전과허용</Text>
-            <Text>2022년부터 4학년 전과허용</Text>
-          </Box>
-          <Box>
-            <Heading size="md">사전시험</Heading>
-            <Text>컴퓨터공학부 지필고사</Text>
-            {/* TODO: drawer 링크 처리 어떻게?
+          <Stack spacing={4}>
+            <Box>
+              <Heading size="md">특이사항</Heading>
+              <Text>간호학과 전과허용</Text>
+              <Text>수의대 전과허용</Text>
+              <Text>2022년부터 4학년 전과허용</Text>
+            </Box>
+            <Box>
+              <Heading size="md">사전시험</Heading>
+              <Text>컴퓨터공학부 지필고사</Text>
+              {/* TODO: drawer 링크 처리 어떻게?
               2023 지필고사 기출문제 추가
               2024 문제 복원
             */}
-          </Box>
-          <Box>
-            <Heading size="md">추가사항</Heading>
-            <Text>복수/부 전공 추가 예정(일정 미정)</Text>
-          </Box>
+            </Box>
+            <Box>
+              <Heading size="md">추가사항</Heading>
+              <Text>복수/부전공 추가 예정(일정 미정)</Text>
+            </Box>
+          </Stack>
         </DrawerBody>
         <Divider />
         <DrawerFooter display="block" color="gray.500">

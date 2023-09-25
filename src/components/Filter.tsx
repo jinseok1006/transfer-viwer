@@ -9,38 +9,11 @@ import {
   Input,
   Flex,
 } from '@chakra-ui/react';
-import { create } from 'zustand';
 
+import { useFilterStore } from '../store/filter';
 import { COLLEGES } from '../collegeIndex';
 
 const GRADES = [0, 1, 2] as const;
-
-interface IFilterState {
-  gradeFilter: number;
-  collegeFilter: string;
-  searchFilter: string;
-  toggleGrade: (grade: number) => void;
-  toggleCollege: (college: string) => void;
-  resetFilter: () => void;
-  changeSearch: (event: React.FormEvent) => void;
-}
-
-export const useFilterStore = create<IFilterState>()((set) => ({
-  gradeFilter: 0,
-  collegeFilter: '공과대학',
-  searchFilter: '',
-  toggleGrade: (inputGrade) => set({ gradeFilter: inputGrade }),
-  toggleCollege: (inputCollege) => set({ collegeFilter: inputCollege }),
-  changeSearch: (event) => {
-    set({ searchFilter: (event.target as HTMLInputElement).value });
-  },
-  resetFilter: () =>
-    set({
-      collegeFilter: '공과대학',
-      gradeFilter: 0,
-      searchFilter: '',
-    }),
-}));
 
 // TODO: 초기화 버튼 input 태그만
 
@@ -96,7 +69,6 @@ export default function Filter() {
           </Box>
           <Box>
             <Heading size="sm" mb={3}>
-              {/* TODO: 이 새끼 대소문자 가림 clear */}
               검색
             </Heading>
             <Input

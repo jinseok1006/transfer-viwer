@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
 
-import { useStatsStore } from './store';
+import { useStatsStore } from './store/stats';
 import TransferViewer from './pages/TransferViewer';
 import Disclaimer from './pages/Disclaimer';
 import AppBar from './components/AppBar';

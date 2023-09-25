@@ -13,13 +13,12 @@ import {
   Tr,
   Tbody,
   Td,
+  Text,
 } from '@chakra-ui/react';
 import { COLLEGE_INDEX } from '../collegeIndex';
 
-import { useFilterStore } from './Filter';
-import { useStatsStore, IStat } from '../store';
-
-// 학과 1개의 데이터
+import { useFilterStore } from '../store/filter';
+import { useStatsStore, IStat } from '../store/stats';
 
 export default function StatsCardsContainer() {
   const { loading, stats, error } = useStatsStore();
@@ -41,9 +40,6 @@ function StatCardsContainer() {
   const filteredStats: StatCardProps[] = [];
   const stats = useStatsStore((state) => state.stats);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
-  // const activeColleges = collegeFilter
-  //   .filter((col) => col.isActived)
-  //   .map((col) => col.college);
 
   const activeDivisions = COLLEGE_INDEX.filter((col) =>
     collegeFilter.includes(col.college)
@@ -63,7 +59,15 @@ function StatCardsContainer() {
   // debug
   // console.log(filteredStats);
 
-  // TODO: 만약 filteredStats가 없으면 올바른 검색어가 아니라는 안내 문구 추가.
+  if (filteredStats.length === 0) {
+    return (
+      <Text as="b" textAlign="center">
+        유효한 결과가 없습니다.
+        <br />
+        검색어가 올바른지 확인해주세요.
+      </Text>
+    );
+  }
 
   return filteredStats.map((stat) => (
     <StatCard
