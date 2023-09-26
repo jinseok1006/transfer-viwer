@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   Flex,
+  WrapItem,
 } from '@chakra-ui/react';
 
 import { useFilterStore } from '../store/filter';
@@ -38,7 +39,7 @@ export default function Filter() {
             </Heading>
             <Wrap gap={4}>
               {COLLEGES.map((col) => (
-                <li key={col}>
+                <WrapItem key={col}>
                   <Button
                     size="sm"
                     name={col}
@@ -47,7 +48,7 @@ export default function Filter() {
                   >
                     {col}
                   </Button>
-                </li>
+                </WrapItem>
               ))}
             </Wrap>
           </Box>
@@ -57,14 +58,15 @@ export default function Filter() {
             </Heading>
             <Wrap gap={4}>
               {GRADES.map((grade) => (
-                <Button
-                  size="sm"
-                  onClick={() => toggleGrade(grade)}
-                  key={grade}
-                  isActive={grade === gradeFilter}
-                >
-                  {grade + 2}학년
-                </Button>
+                <WrapItem key={grade}>
+                  <Button
+                    size="sm"
+                    onClick={() => toggleGrade(grade)}
+                    isActive={grade === gradeFilter}
+                  >
+                    {grade + 2}학년
+                  </Button>
+                </WrapItem>
               ))}
             </Wrap>
           </Box>
