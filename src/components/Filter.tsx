@@ -38,15 +38,16 @@ export default function Filter() {
             </Heading>
             <Wrap gap={4}>
               {COLLEGES.map((col) => (
-                <Button
-                  size="sm"
-                  name={col}
-                  key={col}
-                  isActive={col === collegeFilter}
-                  onClick={() => toggleCollege(col)}
-                >
-                  {col}
-                </Button>
+                <li key={col}>
+                  <Button
+                    size="sm"
+                    name={col}
+                    isActive={col === collegeFilter}
+                    onClick={() => toggleCollege(col)}
+                  >
+                    {col}
+                  </Button>
+                </li>
               ))}
             </Wrap>
           </Box>
