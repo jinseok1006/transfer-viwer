@@ -13,23 +13,12 @@ import {
   Tr,
   Tbody,
   Td,
+  Text,
 } from '@chakra-ui/react';
-import collegeIndex from '../collegeIndex';
+import { COLLEGE_INDEX } from '../collegeIndex';
 
-import { useFilterStore } from './Filter';
-import { useStatsStore } from '../App';
-
-// 학과 1개의 데이터
-export interface IStat {
-  division: string;
-  yearsData: {
-    [year: number]: {
-      capacity: number;
-      applicants: number;
-      rate: number;
-    };
-  };
-}
+import { useFilterStore } from '../store/filter';
+import { useStatsStore, IStat } from '../store/stats';
 
 export default function StatsCardsContainer() {
   const { loading, stats, error } = useStatsStore();
@@ -48,17 +37,13 @@ export default function StatsCardsContainer() {
 }
 
 function StatCardsContainer() {
-  // TODO: 학년은 0,1,2중하나만 선택할 수 있게 변경 clear
   const filteredStats: StatCardProps[] = [];
   const stats = useStatsStore((state) => state.stats);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
-  // const activeColleges = collegeFilter
-  //   .filter((col) => col.isActived)
-  //   .map((col) => col.college);
 
-  const activeDivisions = collegeIndex
-    .filter((col) => collegeFilter.includes(col.college))
-    .reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
+  const activeDivisions = COLLEGE_INDEX.filter((col) =>
+    collegeFilter.includes(col.college)
+  ).reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
   if (!stats) return;
 
   stats.forEach((gradeStats, grade) => {
@@ -71,7 +56,18 @@ function StatCardsContainer() {
     });
   });
 
-  console.log(filteredStats);
+  // debug
+  // console.log(filteredStats);
+
+  if (filteredStats.length === 0) {
+    return (
+      <Text as="b" textAlign="center">
+        유효한 결과가 없습니다.
+        <br />
+        검색어가 올바른지 확인해주세요.
+      </Text>
+    );
+  }
 
   return filteredStats.map((stat) => (
     <StatCard
@@ -94,7 +90,7 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
       textAlign: 'center',
     },
   };
-  // TODO: viewport 하단에 닿으면 카드 하단 margin이 없음 clear
+
   return (
     <Card>
       <CardHeader>

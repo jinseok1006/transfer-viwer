@@ -1,31 +1,27 @@
 import { useEffect } from 'react';
-import { Container, Stack, Box } from '@chakra-ui/react';
-import { create } from 'zustand';
 import axios from 'axios';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { Container } from '@chakra-ui/react';
 
-import Filter from './components/Filter';
+import { useStatsStore } from './store/stats';
+import TransferViewer from './pages/TransferViewer';
+import Disclaimer from './pages/Disclaimer';
 import AppBar from './components/AppBar';
-import StatsCardsContainer, { IStat } from './components/StatsCards';
-
-interface IStatsState {
-  loading: boolean;
-  stats: null | IStat[][];
-  error: any;
-  load: () => void;
-  success: (data: any) => void;
-  fail: (err: any) => void;
-}
-
-export const useStatsStore = create<IStatsState>()((set) => ({
-  loading: false,
-  stats: null,
-  error: null,
-  load: () => set({ loading: true, stats: null, error: null }),
-  success: (data) => set({ loading: false, stats: data, error: null }),
-  fail: (err) => set({ loading: false, stats: null, error: err }),
-}));
 
 function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MyApp />}>
+          <Route index element={<TransferViewer />} />
+          <Route path="disclaimer" element={<Disclaimer />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function MyApp() {
   const { load, success, fail } = useStatsStore();
 
   useEffect(() => {
@@ -44,16 +40,11 @@ function App() {
     fetchStats();
   }, []);
 
-  // TODO: 백그라운드 컬러 회색으로 clear
   return (
     <>
       <AppBar />
       <Container maxW="md">
-        <Stack mt={2} direction="column" spacing={4} minH="800px">
-          <Filter />
-          <StatsCardsContainer />
-          <Box h="50px" />
-        </Stack>
+        <Outlet />
       </Container>
     </>
   );

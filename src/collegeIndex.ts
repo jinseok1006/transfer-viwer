@@ -1,4 +1,21 @@
-export default [
+export const COLLEGES = [
+  '간호대학',
+  '공과대학',
+  '글로벌융합대학',
+  '농업생명과학대학',
+  '사범대학',
+  '사회과학대학',
+  '상과대학',
+  '생활과학대학',
+  '수의과대학',
+  '예술대학',
+  '인문대학',
+  '자연과학대학',
+  '환경생명자원대학',
+  '본부',
+] as const;
+
+export const COLLEGE_INDEX = [
   {
     college: '간호대학',
     divisions: ['간호학과'],
@@ -172,4 +189,4 @@ export default [
     college: '본부',
     divisions: ['스마트팜학과'],
   },
-];
+] as const;
