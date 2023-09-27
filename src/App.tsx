@@ -6,6 +6,7 @@ import { Container } from '@chakra-ui/react';
 import { useStatsStore } from './store/stats';
 import TransferViewer from './pages/TransferViewer';
 import Disclaimer from './pages/Disclaimer';
+import NotFound from './pages/NotFound';
 import AppBar from './components/AppBar';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<MyApp />}>
           <Route index element={<TransferViewer />} />
           <Route path="disclaimer" element={<Disclaimer />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
