@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
 
-import { useStatsStore } from './store/stats';
+import { useTransferStore } from './store/stats';
+import { useDobuleMajorStore } from './store/doubleMajor';
+
+import AppBar from './components/AppBar';
 import TransferViewer from './pages/TransferViewer';
 import Disclaimer from './pages/Disclaimer';
 import NotFound from './pages/NotFound';
-import AppBar from './components/AppBar';
+import { DoubleTest } from './pages/DobleMajorViewer';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
           <Route index element={<TransferViewer />} />
           <Route path="disclaimer" element={<Disclaimer />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="test" element={<DoubleTest />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -24,22 +27,12 @@ function App() {
 }
 
 function MyApp() {
-  const { load, success, fail } = useStatsStore();
+  const fetchTransferData = useTransferStore((state) => state.fetchData);
+  const fetchDoubleMajorData = useDobuleMajorStore((state) => state.fetchData);
 
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        load();
-        const response = await axios.get(
-          `${window.location.protocol}//${window.location.host}/stats.json`
-        );
-        success(response.data);
-      } catch (err) {
-        fail(err);
-      }
-    }
-
-    fetchStats();
+    fetchTransferData();
+    fetchDoubleMajorData();
   }, []);
 
   return (

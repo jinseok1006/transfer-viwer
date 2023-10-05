@@ -18,10 +18,10 @@ import {
 import { COLLEGE_INDEX } from '../collegeIndex';
 
 import { useFilterStore } from '../store/filter';
-import { useStatsStore, IStat } from '../store/stats';
+import { IStat, useTransferStore } from '../store/stats';
 
 export default function StatsCardsContainer() {
-  const { loading, stats, error } = useStatsStore();
+  const { loading, data: stats, error } = useTransferStore();
   if (error) {
     <div>에러발생</div>;
   }
@@ -38,7 +38,7 @@ export default function StatsCardsContainer() {
 
 function StatCardsContainer() {
   const filteredStats: StatCardProps[] = [];
-  const stats = useStatsStore((state) => state.stats);
+  const stats = useTransferStore((state) => state.data);
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
 
   const activeDivisions = COLLEGE_INDEX.filter((col) =>

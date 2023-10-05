@@ -1,4 +1,5 @@
-import { create } from 'zustand';
+import { useAsync } from '../hooks/useAsync';
+import axios from 'axios';
 
 export interface IStat {
   division: string;
@@ -10,6 +11,7 @@ export interface IStat {
     };
   };
 }
+
 export interface IStatsState {
   loading: boolean;
   stats: null | IStat[][];
@@ -19,11 +21,18 @@ export interface IStatsState {
   fail: (err: any) => void;
 }
 
-export const useStatsStore = create<IStatsState>()((set) => ({
-  loading: false,
-  stats: null,
-  error: null,
-  load: () => set({ loading: true, stats: null, error: null }),
-  success: (data) => set({ loading: false, stats: data, error: null }),
-  fail: (err) => set({ loading: false, stats: null, error: err }),
-}));
+// export const useStatsStore = create<IStatsState>()((set) => ({
+//   loading: false,
+//   stats: null,
+//   error: null,
+//   load: () => set({ loading: true, stats: null, error: null }),
+//   success: (data) => set({ loading: false, stats: data, error: null }),
+//   fail: (err) => set({ loading: false, stats: null, error: err }),
+// }));
+
+const fetchTrasnferList = async (): Promise<IStat[][]> => {
+  const { protocol, host } = window.location;
+  return (await axios.get(`${protocol}//${host}/transfer.json`)).data;
+};
+
+export const useTransferStore = useAsync(fetchTrasnferList);
