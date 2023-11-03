@@ -16,7 +16,7 @@ export const useFilterStore = create<IFilterState>()((set) => ({
   toggleGrade: (inputGrade) => set({ gradeFilter: inputGrade }),
   toggleCollege: (inputCollege) => set({ collegeFilter: inputCollege }),
   changeSearch: (event) => {
-    set({ searchFilter: (event.target as HTMLInputElement).value });
+    set({ searchFilter: (event.target as HTMLInputElement).value.toUpperCase() });
   },
   resetFilter: () =>
     set({

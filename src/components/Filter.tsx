@@ -74,11 +74,7 @@ export default function Filter() {
             <Heading size="sm" mb={3}>
               검색
             </Heading>
-            <Input
-              placeholder="학과명"
-              value={searchFilter}
-              onChange={changeSearch}
-            />
+            <Input placeholder="학과명" value={searchFilter} onChange={changeSearch} />
           </Box>
           <Flex justifyContent="flex-end">
             <Button size="sm" colorScheme="red" onClick={resetFilter}>

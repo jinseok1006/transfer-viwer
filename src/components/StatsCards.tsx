@@ -18,7 +18,7 @@ import {
 import { COLLEGE_INDEX } from '../collegeIndex';
 
 import { useFilterStore } from '../store/filter';
-import { IStat, useTransferStore } from '../store/stats';
+import { useTransferStore } from '../store/transfer';
 
 export default function StatsCardsContainer() {
   const { loading, data: stats, error } = useTransferStore();
@@ -37,54 +37,55 @@ export default function StatsCardsContainer() {
 }
 
 function StatCardsContainer() {
-  const filteredStats: StatCardProps[] = [];
-  const stats = useTransferStore((state) => state.data);
+  // const filteredStats: StatCardProps[] = [];
+  const transferData = useTransferStore((state) => state.data)!;
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
 
-  const activeDivisions = COLLEGE_INDEX.filter((col) =>
-    collegeFilter.includes(col.college)
-  ).reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
-  if (!stats) return;
+  // 대학별 학과명 필터 생성
+  const divisionFilter: readonly string[] = COLLEGE_INDEX.find(
+    (idx) => idx.college === collegeFilter
+  )!.divisions;
 
-  stats.forEach((gradeStats, grade) => {
-    if (grade !== gradeFilter) return;
+  // +검색어 학과명 필터 생성
+  const activeDivisions =
+    searchFilter === ''
+      ? divisionFilter
+      : divisionFilter.filter((div) => div.includes(searchFilter));
 
-    gradeStats.forEach((individualStat) => {
-      if (!activeDivisions.includes(individualStat.division)) return;
-      if (!individualStat.division.includes(searchFilter.toUpperCase())) return;
-      filteredStats.push({ ...individualStat, grade });
-    });
-  });
+  // 학과명 필터된 transferData
+  const filteredDivisions = transferData.filter((stat) => activeDivisions.includes(stat.division));
 
-  // debug
-  // console.log(filteredStats);
-
-  if (filteredStats.length === 0) {
-    return (
-      <Text as="b" textAlign="center">
-        유효한 결과가 없습니다.
-        <br />
-        검색어가 올바른지 확인해주세요.
-      </Text>
-    );
+  if (filteredDivisions.length === 0) {
+    return <NotFound />;
   }
 
-  return filteredStats.map((stat) => (
-    <StatCard
-      key={`${stat.division}_${stat.grade}`}
-      division={stat.division}
-      yearsData={stat.yearsData}
-      grade={stat.grade}
-    />
-  ));
+  // +학년 필터된 transferData
+  const filteredStats = filteredDivisions.map((division) => ({
+    ...division,
+    data: division.data.filter((e) => e[1] === gradeFilter),
+  }));
+
+  return filteredStats.map((stat) => {
+    const grade = stat.data[0][1];
+    return (
+      <StatCard
+        key={stat.division.toString()}
+        division={stat.division}
+        data={stat.data}
+        grade={grade}
+      />
+    );
+  });
 }
 // TODO: viewport하단에 닿으면 queue에 있던것을 몇개 빼내서 렌더링(무한스크롤)
 
-interface StatCardProps extends IStat {
+interface StatCardProps {
+  division: string;
+  data: number[][];
   grade: number;
 }
 
-function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
+function StatCard({ division, grade, data }: StatCardProps) {
   const tableStyles = {
     'td, th': {
       textAlign: 'center',
@@ -111,12 +112,12 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
               </Tr>
             </Thead>
             <Tbody>
-              {Object.keys(statics).map((year) => (
-                <Tr key={`${year}`}>
+              {data.map(([year, grade, capacity, applicants]) => (
+                <Tr key={year.toString()}>
                   <Td>{year}</Td>
-                  <Td>{statics[parseInt(year)].applicants}</Td>
-                  <Td>{statics[parseInt(year)].capacity}</Td>
-                  <Td>{statics[parseInt(year)].rate}</Td>
+                  <Td>{applicants}</Td>
+                  <Td>{capacity}</Td>
+                  <Td>{capacity === 0 ? '-' : (applicants / capacity).toFixed(2)}</Td>
                 </Tr>
               ))}
             </Tbody>
@@ -124,5 +125,15 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
         </TableContainer>
       </CardBody>
     </Card>
+  );
+}
+
+function NotFound() {
+  return (
+    <Text as="b" textAlign="center">
+      유효한 결과가 없습니다.
+      <br />
+      검색어가 올바른지 확인해주세요.
+    </Text>
   );
 }
