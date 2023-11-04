@@ -112,14 +112,17 @@ function StatCard({ division, grade, data }: StatCardProps) {
               </Tr>
             </Thead>
             <Tbody>
-              {data.map(([year, grade, capacity, applicants]) => (
-                <Tr key={year.toString()}>
-                  <Td>{year}</Td>
-                  <Td>{applicants}</Td>
-                  <Td>{capacity}</Td>
-                  <Td>{capacity === 0 ? '-' : (applicants / capacity).toFixed(2)}</Td>
-                </Tr>
-              ))}
+              {
+                //@ts-ignore
+                data.map(([year, grade, capacity, applicants]) => (
+                  <Tr key={year.toString()}>
+                    <Td>{year}</Td>
+                    <Td>{applicants}</Td>
+                    <Td>{capacity}</Td>
+                    <Td>{capacity === 0 ? '-' : (applicants / capacity).toFixed(2)}</Td>
+                  </Tr>
+                ))
+              }
             </Tbody>
           </Table>
         </TableContainer>
