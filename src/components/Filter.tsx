@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -9,80 +8,17 @@ import {
   Button,
   Input,
   Flex,
+  WrapItem,
 } from '@chakra-ui/react';
-import { create } from 'zustand';
 
-export default function FilterContainer() {
-  return <Filter />;
-}
+import { useFilterStore } from '../store/filter';
+import { COLLEGES } from '../collegeIndex';
 
-const COLLEGES = [
-  '간호대학',
-  '공과대학',
-  '글로벌융합대학',
-  '농업생명과학대학',
-  '사범대학',
-  '사회과학대학',
-  '상과대학',
-  '생활과학대학',
-  '수의과대학',
-  '예술대학',
-  '인문대학',
-  '자연과학대학',
-  '환경생명자원대학',
-  '본부',
-] as const;
-const GRADES = [2, 3, 4] as const;
+const GRADES = [0, 1, 2] as const;
 
-interface IFilterState {
-  gradeFilter: boolean[];
-  collegeFilter: { college: string; isActived: boolean }[];
-  searchFilter: string;
-  toggleGrade: (idx: number) => void;
-  toggleCollege: (event: React.MouseEvent) => void;
-  hasAnyFilterFalse: () => boolean;
-  resetFilter: () => void;
-  changeSearch: (event: React.FormEvent) => void;
-}
+// TODO: 초기화 버튼 input 태그만
 
-export const useFilterStore = create<IFilterState>()((set, get) => ({
-  gradeFilter: [true, false, false],
-  collegeFilter: COLLEGES.map((col) => ({ college: col, isActived: false })),
-  searchFilter: '',
-  toggleGrade: (inputGrade: number) =>
-    set((state) => ({
-      gradeFilter: state.gradeFilter.map((value, grade) =>
-        grade === inputGrade ? !value : value
-      ),
-    })),
-  toggleCollege: (event) => {
-    const { name } = event.target as HTMLButtonElement;
-    set((state) => ({
-      collegeFilter: state.collegeFilter.map((college) => ({
-        college: college.college,
-        isActived:
-          college.college === name ? !college.isActived : college.isActived,
-      })),
-    }));
-  },
-  changeSearch: (e: React.FormEvent) => {
-    set({ searchFilter: (e.target as HTMLInputElement).value });
-  },
-  hasAnyFilterFalse: () =>
-    get().collegeFilter.every((college) => college.isActived === false) ||
-    get().gradeFilter.every((value) => value === false),
-  resetFilter: () =>
-    set({
-      collegeFilter: COLLEGES.map((col) => ({
-        college: col,
-        isActived: false,
-      })),
-      gradeFilter: [true, false, false],
-      searchFilter: '',
-    }),
-}));
-
-function Filter() {
+export default function Filter() {
   const {
     gradeFilter,
     collegeFilter,
@@ -102,16 +38,17 @@ function Filter() {
               대학
             </Heading>
             <Wrap gap={4}>
-              {collegeFilter.map((col) => (
-                <Button
-                  size="sm"
-                  name={col.college}
-                  key={col.college}
-                  isActive={col.isActived}
-                  onClick={toggleCollege}
-                >
-                  {col.college}
-                </Button>
+              {COLLEGES.map((col) => (
+                <WrapItem key={col}>
+                  <Button
+                    size="sm"
+                    name={col}
+                    isActive={col === collegeFilter}
+                    onClick={() => toggleCollege(col)}
+                  >
+                    {col}
+                  </Button>
+                </WrapItem>
               ))}
             </Wrap>
           </Box>
@@ -120,15 +57,16 @@ function Filter() {
               학년
             </Heading>
             <Wrap gap={4}>
-              {GRADES.map((grade, i) => (
-                <Button
-                  size="sm"
-                  onClick={() => toggleGrade(i)}
-                  key={i}
-                  isActive={gradeFilter[i]}
-                >
-                  {grade}학년
-                </Button>
+              {GRADES.map((grade) => (
+                <WrapItem key={grade}>
+                  <Button
+                    size="sm"
+                    onClick={() => toggleGrade(grade)}
+                    isActive={grade === gradeFilter}
+                  >
+                    {grade + 2}학년
+                  </Button>
+                </WrapItem>
               ))}
             </Wrap>
           </Box>
@@ -136,11 +74,7 @@ function Filter() {
             <Heading size="sm" mb={3}>
               검색
             </Heading>
-            <Input
-              placeholder="학과명"
-              value={searchFilter}
-              onChange={changeSearch}
-            />
+            <Input placeholder="학과명" value={searchFilter} onChange={changeSearch} />
           </Box>
           <Flex justifyContent="flex-end">
             <Button size="sm" colorScheme="red" onClick={resetFilter}>

@@ -1,57 +1,40 @@
 import { useEffect } from 'react';
-import { Container, Stack } from '@chakra-ui/react';
-import { create } from 'zustand';
-import axios from 'axios';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { Container } from '@chakra-ui/react';
 
-import FilterContainer from './components/Filter';
+import { useTransferStore } from './store/transfer';
+
 import AppBar from './components/AppBar';
-import Cards, { IStatics } from './components/StaticsCard';
-
-interface IStaticState {
-  loading: boolean;
-  statics: null | IStatics[][];
-  error: any;
-  load: () => void;
-  success: (data: any) => void;
-  fail: (err: any) => void;
-}
-
-export const useStaticsStore = create<IStaticState>()((set) => ({
-  loading: false,
-  statics: null,
-  error: null,
-  load: () => set({ loading: true, statics: null, error: null }),
-  success: (data) => set({ loading: false, statics: data, error: null }),
-  fail: (err) => set({ loading: false, statics: null, error: err }),
-}));
+import TransferViewer from './pages/TransferViewer';
+import Disclaimer from './pages/Disclaimer';
+import NotFound from './pages/NotFound';
 
 function App() {
-  const { load, success, fail } = useStaticsStore();
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MyApp />}>
+          <Route index element={<TransferViewer />} />
+          <Route path="disclaimer" element={<Disclaimer />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function MyApp() {
+  const fetchTransferData = useTransferStore((state) => state.fetchData);
 
   useEffect(() => {
-    async function fetchStatics() {
-      try {
-        load();
-        const response = await axios.get(
-          `${window.location.protocol}//${window.location.host}/statics.json`
-        );
-        success(response.data);
-      } catch (err) {
-        fail(err);
-      }
-    }
-
-    fetchStatics();
+    fetchTransferData();
   }, []);
 
   return (
     <>
       <AppBar />
-      <Container maxW="md" pt={1}>
-        <Stack mt={2} direction="column" spacing={4}>
-          <FilterContainer />
-          <Cards />
-        </Stack>
+      <Container maxW="md">
+        <Outlet />
       </Container>
     </>
   );
