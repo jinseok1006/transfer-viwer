@@ -66,6 +66,8 @@ function StatCardsContainer() {
   }));
 
   return filteredStats.map((stat) => {
+    if (!stat.data.length) return null;
+
     const grade = stat.data[0][1];
     return (
       <StatCard
@@ -114,14 +116,17 @@ function StatCard({ division, grade, data }: StatCardProps) {
             <Tbody>
               {
                 //@ts-ignore
-                data.map(([year, grade, capacity, applicants]) => (
-                  <Tr key={year.toString()}>
-                    <Td>{year}</Td>
-                    <Td>{applicants}</Td>
-                    <Td>{capacity}</Td>
-                    <Td>{capacity === 0 ? '-' : (applicants / capacity).toFixed(2)}</Td>
-                  </Tr>
-                ))
+                data.map(([year, grade, capacity, applicants]) => {
+                  const invalid = capacity === 0;
+                  return (
+                    <Tr key={year.toString()}>
+                      <Td>{year}</Td>
+                      <Td>{invalid ? '-' : applicants}</Td>
+                      <Td>{capacity}</Td>
+                      <Td>{invalid ? '-' : (applicants / capacity).toFixed(2)}</Td>
+                    </Tr>
+                  );
+                })
               }
             </Tbody>
           </Table>
