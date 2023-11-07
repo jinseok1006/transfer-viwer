@@ -1,5 +1,5 @@
 import { useAsync } from '../hooks/useAsync';
-import axios from 'axios';
+import transferData from '../assets/transfer.min.json';
 
 export interface TransferStat {
   division: string;
@@ -12,9 +12,6 @@ type Grade = 0 | 1 | 2;
 type Applicants = number;
 type Capacity = number;
 
-const fetchTrasnferList = async (): Promise<TransferStat[]> => {
-  const { protocol, host } = window.location;
-  return (await axios.get(`${protocol}//${host}/transfer.min.json`)).data;
-};
+const fetchTrasnferList = async () => transferData as TransferStat[];
 
 export const useTransferStore = useAsync(fetchTrasnferList);

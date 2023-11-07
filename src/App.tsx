@@ -1,42 +1,31 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import { Container } from '@chakra-ui/react';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Center, Spinner } from '@chakra-ui/react';
 
-import { useTransferStore } from './store/transfer';
+import Layout from './pages/Layout';
 
-import AppBar from './components/AppBar';
-import TransferViewer from './pages/TransferViewer';
-import Disclaimer from './pages/Disclaimer';
-import NotFound from './pages/NotFound';
+const Router = React.lazy(() => import('./Router'));
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MyApp />}>
-          <Route index element={<TransferViewer />} />
-          <Route path="disclaimer" element={<Disclaimer />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-function MyApp() {
-  const fetchTransferData = useTransferStore((state) => state.fetchData);
-
-  useEffect(() => {
-    fetchTransferData();
-  }, []);
-
-  return (
-    <>
-      <AppBar />
-      <Container maxW="md">
-        <Outlet />
-      </Container>
-    </>
+    <Routes>
+      <Route path="/*" element={<Layout />}>
+        <Route
+          path="*"
+          element={
+            <React.Suspense
+              fallback={
+                <Center>
+                  <Spinner />
+                </Center>
+              }
+            >
+              <Router />
+            </React.Suspense>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 

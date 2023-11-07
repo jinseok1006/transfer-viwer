@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import {
   Box,
   useDisclosure,
@@ -19,8 +20,25 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { HamburgerIcon } from '@chakra-ui/icons';
 
-export default function AppBar() {
+function AppNavigation() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const memoizedOnOpen = useCallback(onOpen, []);
+  const memoizedOnClose = useCallback(onClose, []);
+
+  return (
+    <>
+      <AppBar onOpen={memoizedOnOpen} />
+      <MyDrawer isOpen={isOpen} onClose={memoizedOnClose} />
+    </>
+  );
+}
+export default AppNavigation;
+
+interface AppBarProps {
+  onOpen: () => void;
+}
+
+const AppBar = React.memo(function AppBar({ onOpen }: AppBarProps) {
   return (
     <>
       <Box maxW="md" mx="auto" mb={3} bgColor="white" boxShadow="xs">
@@ -37,10 +55,9 @@ export default function AppBar() {
           />
         </Flex>
       </Box>
-      <MyDrawer isOpen={isOpen} onClose={onClose} />
     </>
   );
-}
+});
 
 interface MyDrawerProps {
   isOpen: boolean;
@@ -65,10 +82,6 @@ function MyDrawer({ isOpen, onClose }: MyDrawerProps) {
             <Box>
               <Heading size="md">사전시험</Heading>
               <Text>컴퓨터공학부 지필고사</Text>
-              {/* TODO: drawer 링크 처리 어떻게?
-              2023 지필고사 기출문제 추가
-              2024 문제 복원
-            */}
             </Box>
             <Box>
               <Heading size="md">추가사항</Heading>

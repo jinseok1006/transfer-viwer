@@ -15,7 +15,7 @@ export default function Meta({ title, description }: Metadata) {
         content="전북대학교, JBNU, 전학, 전과, 복수전공, 부전공"
       />
       <meta name="description" content={desc} />
-      <meta name="og:site_name" content="잉잉" />
+      <meta name="og:site_name" content="inging" />
       <meta name="og:title" content={title} />
       <meta name="og:description" content={desc} />
     </Helmet>

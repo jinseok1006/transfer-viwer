@@ -1,9 +1,20 @@
+import { useEffect } from 'react';
 import { Stack, Box } from '@chakra-ui/react';
 import Filter from '../components/Filter';
 import StatsCardsContainer from '../components/StatsCards';
 import Meta from '../components/Meta';
 
+import { useTransferStore } from '../store/transfer';
+
 export default function TransferViewer() {
+  const transferData = useTransferStore((state) => state.data);
+  const fetchTransferData = useTransferStore((state) => state.fetchData);
+  useEffect(() => {
+    if (!transferData) {
+      fetchTransferData();
+    }
+  }, []);
+
   return (
     <>
       <Meta
