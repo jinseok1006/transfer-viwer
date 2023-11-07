@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Card,
   Center,
@@ -17,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { COLLEGE_INDEX } from '../collegeIndex';
 
-import { useFilterStore } from '../store/filter';
+import { useFilterStateStore } from '../store/filter';
 import { useTransferStore } from '../store/transfer';
 
 export default function StatsCardsContainer() {
@@ -37,23 +38,26 @@ export default function StatsCardsContainer() {
 }
 
 function StatCardsContainer() {
-  // const filteredStats: StatCardProps[] = [];
   const transferData = useTransferStore((state) => state.data)!;
-  const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
+  const { gradeFilter, collegeFilter, searchFilter } = useFilterStateStore();
 
   // 대학별 학과명 필터 생성
   const divisionFilter: readonly string[] = COLLEGE_INDEX.find(
     (idx) => idx.college === collegeFilter
   )!.divisions;
 
-  // +검색어 학과명 필터 생성
+  // +검색어 학과명 필터 생성 / 빈칸이면 이전 값 투과
   const activeDivisions =
     searchFilter === ''
       ? divisionFilter
-      : divisionFilter.filter((div) => div.includes(searchFilter));
+      : divisionFilter.filter((div) =>
+          div.includes(searchFilter.toUpperCase())
+        );
 
   // 학과명 필터된 transferData
-  const filteredDivisions = transferData.filter((stat) => activeDivisions.includes(stat.division));
+  const filteredDivisions = transferData.filter((stat) =>
+    activeDivisions.includes(stat.division)
+  );
 
   if (filteredDivisions.length === 0) {
     return <NotFound />;
@@ -66,7 +70,7 @@ function StatCardsContainer() {
   }));
 
   return filteredStats.map((stat) => {
-    if (!stat.data.length) return null;
+    if (stat.data.length === 0) return null;
 
     const grade = stat.data[0][1];
     return (
@@ -123,7 +127,9 @@ function StatCard({ division, grade, data }: StatCardProps) {
                       <Td>{year}</Td>
                       <Td>{invalid ? '-' : applicants}</Td>
                       <Td>{capacity}</Td>
-                      <Td>{invalid ? '-' : (applicants / capacity).toFixed(2)}</Td>
+                      <Td>
+                        {invalid ? '-' : (applicants / capacity).toFixed(2)}
+                      </Td>
                     </Tr>
                   );
                 })
@@ -136,7 +142,7 @@ function StatCard({ division, grade, data }: StatCardProps) {
   );
 }
 
-function NotFound() {
+const NotFound = React.memo(function NotFound() {
   return (
     <Text as="b" textAlign="center">
       유효한 결과가 없습니다.
@@ -144,4 +150,4 @@ function NotFound() {
       검색어가 올바른지 확인해주세요.
     </Text>
   );
-}
+});
