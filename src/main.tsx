@@ -14,6 +14,10 @@ const theme = extendTheme({
       },
     },
   },
+  fonts: {
+    heading: 'pretendard',
+    body: 'pretendard',
+  },
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

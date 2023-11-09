@@ -1,13 +1,12 @@
 import { Heading, Text, Stack, Flex, Link } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-
-import Meta from '../components/Meta';
+import Head from '../components/Head';
 
 export default function Disclaimer() {
   return (
     <>
-      <Meta title="면책 조항" />
-      <Heading size="md" my={4}>
+      <Head title="면책 조항" />
+      <Heading size="md" mt={6} mb={3}>
         면책 조항
       </Heading>
       <Stack spacing={3}>
@@ -34,7 +33,7 @@ export default function Disclaimer() {
         </Text>
       </Stack>
 
-      <Flex justifyContent="flex-end">
+      <Flex justifyContent="flex-end" mt={4}>
         <Link
           as={RouterLink}
           to="/"
