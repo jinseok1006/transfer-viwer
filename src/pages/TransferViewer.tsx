@@ -17,7 +17,7 @@ export default function TransferViewer() {
 
   return (
     <>
-      <Head title="경쟁률 현황" />
+      <Head title="전북대 전학/전과 경쟁률 현황" />
       <Stack mt={2} direction="column" spacing={4} minH="800px">
         <Filter />
         <StatsCardsContainer />
