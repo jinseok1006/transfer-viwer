@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useFilterStore, useFilterStateStore } from '../store/filter';
-import { COLLEGES } from '../collegeIndex';
+import { COLLEGES } from '../assets/collegeIndex';
 
 const GRADES = [0, 1, 2] as const;
 

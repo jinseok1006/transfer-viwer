@@ -62,7 +62,7 @@ function SidebarLink({
   disabled = false,
 }: SidebarLinkProps) {
   const { pathname } = useLocation();
-  const pattern = new RegExp(`^${to}\/?.*`);
+  const pattern = new RegExp(`^${to}[\/.*]?`);
   const actived = to === '/' ? pathname === '/' : pathname.match(pattern);
 
   return (
