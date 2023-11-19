@@ -5,7 +5,10 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 
-// TODO: 운영체제별 폰트 어떻게 처리할 것인지 확인
+const fontFactory = (font: string) =>
+  `'${font}','Apple SD Gothic Neo', '애플 SD 산돌고딕 Neo', 'Malgun Gothic', '맑은 고딕', sans-serif`;
+const globalFontFamily = fontFactory('pretendard');
+
 const theme = extendTheme({
   styles: {
     global: {
@@ -15,8 +18,8 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'pretendard',
-    body: 'pretendard',
+    heading: globalFontFamily,
+    body: globalFontFamily,
   },
 });
 

@@ -1,5 +1,5 @@
 import { useAsync } from '../hooks/useAsync';
-import transferData from '../assets/transfer.json';
+import transferData from '../assets/transferData.json';
 
 export interface TransferStat {
   division: string;

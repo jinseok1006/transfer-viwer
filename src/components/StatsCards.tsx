@@ -16,7 +16,7 @@ import {
   Td,
   Text,
 } from '@chakra-ui/react';
-import { COLLEGE_INDEX } from '../collegeIndex';
+import { COLLEGE_INDEX } from '../assets/collegeIndex';
 
 import { useFilterStateStore } from '../store/filter';
 import { useTransferStore } from '../store/transfer';

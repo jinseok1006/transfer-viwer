@@ -47,7 +47,7 @@ export default function SidebarLinks({ onClose }: SidebarLinksProps) {
   );
 }
 
-interface SidebarButtonProps {
+interface SidebarLinkProps {
   name: string;
   to: string;
   onClose: () => void;
@@ -60,9 +60,9 @@ function SidebarLink({
   onClose,
   icon,
   disabled = false,
-}: SidebarButtonProps) {
+}: SidebarLinkProps) {
   const { pathname } = useLocation();
-  const pattern = new RegExp(`^${to}\/?.*`);
+  const pattern = new RegExp(`^${to}(\/.*)?$`);
   const actived = to === '/' ? pathname === '/' : pathname.match(pattern);
 
   return (
