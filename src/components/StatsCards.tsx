@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Card,
   Center,
@@ -15,13 +16,13 @@ import {
   Td,
   Text,
 } from '@chakra-ui/react';
-import { COLLEGE_INDEX } from '../collegeIndex';
+import { COLLEGE_INDEX } from '../assets/collegeIndex';
 
-import { useFilterStore } from '../store/filter';
-import { useStatsStore, IStat } from '../store/stats';
+import { useFilterStateStore } from '../store/filter';
+import { useTransferStore } from '../store/transfer';
 
 export default function StatsCardsContainer() {
-  const { loading, stats, error } = useStatsStore();
+  const { loading, data: stats, error } = useTransferStore();
   if (error) {
     <div>에러발생</div>;
   }
@@ -37,54 +38,60 @@ export default function StatsCardsContainer() {
 }
 
 function StatCardsContainer() {
-  const filteredStats: StatCardProps[] = [];
-  const stats = useStatsStore((state) => state.stats);
-  const { gradeFilter, collegeFilter, searchFilter } = useFilterStore();
+  const transferData = useTransferStore((state) => state.data)!;
+  const { gradeFilter, collegeFilter, searchFilter } = useFilterStateStore();
 
-  const activeDivisions = COLLEGE_INDEX.filter((col) =>
-    collegeFilter.includes(col.college)
-  ).reduce((pre, col) => [...pre, ...col.divisions], [] as string[]);
-  if (!stats) return;
+  // 대학별 학과명 필터 생성
+  const divisionFilter: readonly string[] = COLLEGE_INDEX.find(
+    (idx) => idx.college === collegeFilter
+  )!.divisions;
 
-  stats.forEach((gradeStats, grade) => {
-    if (grade !== gradeFilter) return;
+  // +검색어 학과명 필터 생성 / 빈칸이면 이전 값 투과
+  const activeDivisions =
+    searchFilter === ''
+      ? divisionFilter
+      : divisionFilter.filter((div) =>
+          div.includes(searchFilter.toUpperCase())
+        );
 
-    gradeStats.forEach((individualStat) => {
-      if (!activeDivisions.includes(individualStat.division)) return;
-      if (!individualStat.division.includes(searchFilter.toUpperCase())) return;
-      filteredStats.push({ ...individualStat, grade });
-    });
-  });
+  // 학과명 필터된 transferData
+  const filteredDivisions = transferData.filter((stat) =>
+    activeDivisions.includes(stat.division)
+  );
 
-  // debug
-  // console.log(filteredStats);
-
-  if (filteredStats.length === 0) {
-    return (
-      <Text as="b" textAlign="center">
-        유효한 결과가 없습니다.
-        <br />
-        검색어가 올바른지 확인해주세요.
-      </Text>
-    );
+  if (filteredDivisions.length === 0) {
+    return <NotFound />;
   }
 
-  return filteredStats.map((stat) => (
-    <StatCard
-      key={`${stat.division}_${stat.grade}`}
-      division={stat.division}
-      yearsData={stat.yearsData}
-      grade={stat.grade}
-    />
-  ));
+  // +학년 필터된 transferData
+  const filteredStats = filteredDivisions.map((division) => ({
+    ...division,
+    data: division.data.filter((e) => e[1] === gradeFilter),
+  }));
+
+  return filteredStats.map((stat) => {
+    if (stat.data.length === 0) return null;
+
+    const grade = stat.data[0][1];
+    return (
+      <StatCard
+        key={stat.division.toString()}
+        division={stat.division}
+        data={stat.data}
+        grade={grade}
+      />
+    );
+  });
 }
 // TODO: viewport하단에 닿으면 queue에 있던것을 몇개 빼내서 렌더링(무한스크롤)
 
-interface StatCardProps extends IStat {
+interface StatCardProps {
+  division: string;
+  data: number[][];
   grade: number;
 }
 
-function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
+function StatCard({ division, grade, data }: StatCardProps) {
   const tableStyles = {
     'td, th': {
       textAlign: 'center',
@@ -111,14 +118,22 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
               </Tr>
             </Thead>
             <Tbody>
-              {Object.keys(statics).map((year) => (
-                <Tr key={`${year}`}>
-                  <Td>{year}</Td>
-                  <Td>{statics[parseInt(year)].applicants}</Td>
-                  <Td>{statics[parseInt(year)].capacity}</Td>
-                  <Td>{statics[parseInt(year)].rate}</Td>
-                </Tr>
-              ))}
+              {
+                //@ts-ignore
+                data.map(([year, grade, capacity, applicants]) => {
+                  const invalid = capacity === 0;
+                  return (
+                    <Tr key={year.toString()}>
+                      <Td>{year}</Td>
+                      <Td>{invalid ? '-' : applicants}</Td>
+                      <Td>{capacity}</Td>
+                      <Td>
+                        {invalid ? '-' : (applicants / capacity).toFixed(2)}
+                      </Td>
+                    </Tr>
+                  );
+                })
+              }
             </Tbody>
           </Table>
         </TableContainer>
@@ -126,3 +141,13 @@ function StatCard({ division, grade, yearsData: statics }: StatCardProps) {
     </Card>
   );
 }
+
+const NotFound = React.memo(function NotFound() {
+  return (
+    <Text as="b" textAlign="center">
+      유효한 결과가 없습니다.
+      <br />
+      검색어가 올바른지 확인해주세요.
+    </Text>
+  );
+});

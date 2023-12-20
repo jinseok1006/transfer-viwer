@@ -12,7 +12,7 @@ export const COLLEGES = [
   '인문대학',
   '자연과학대학',
   '환경생명자원대학',
-  '본부',
+  '대학본부',
 ] as const;
 
 export const COLLEGE_INDEX = [
@@ -103,6 +103,7 @@ export const COLLEGE_INDEX = [
       '영어교육과',
       '윤리교육과',
       '지리교육과',
+      '체육교육과',
     ],
   },
   {
@@ -157,7 +158,7 @@ export const COLLEGE_INDEX = [
       '일본학과',
       '중어중문학과',
       '철학과',
-      '프랑스·아프리카학과',
+      '프랑스.아프리카학과',
     ],
   },
   {
@@ -186,7 +187,7 @@ export const COLLEGE_INDEX = [
     ],
   },
   {
-    college: '본부',
+    college: '대학본부',
     divisions: ['스마트팜학과'],
   },
 ] as const;
