@@ -1,5 +1,5 @@
-import { useAsync } from '../hooks/useAsync';
-import transferData from '../assets/transferData.json';
+import transferData from '../../assets/transferData.json';
+import { create } from 'zustand';
 
 export interface TransferStat {
   division: string;
@@ -12,6 +12,6 @@ type Grade = 0 | 1 | 2;
 type Applicants = number;
 type Capacity = number;
 
-const fetchTrasnferList = async () => transferData as TransferStat[];
-
-export const useTransferStore = useAsync(fetchTrasnferList);
+export const useTransferStore = create<TransferStat[]>()(
+  () => transferData as TransferStat[]
+);

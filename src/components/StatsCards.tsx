@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   Card,
-  Center,
-  Spinner,
   CardHeader,
   CardBody,
   Heading,
@@ -16,29 +14,13 @@ import {
   Td,
   Text,
 } from '@chakra-ui/react';
-import { COLLEGE_INDEX } from '../assets/collegeIndex';
+import { COLLEGE_INDEX } from '../../assets/collegeIndex';
 
 import { useFilterStateStore } from '../store/filter';
 import { useTransferStore } from '../store/transfer';
 
-export default function StatsCardsContainer() {
-  const { loading, data: stats, error } = useTransferStore();
-  if (error) {
-    <div>에러발생</div>;
-  }
-
-  if (loading || !stats)
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-
-  return <StatCardsContainer />;
-}
-
-function StatCardsContainer() {
-  const transferData = useTransferStore((state) => state.data)!;
+export default function StatCardsContainer() {
+  const transferData = useTransferStore((state) => state)!;
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStateStore();
 
   // 대학별 학과명 필터 생성
@@ -101,14 +83,14 @@ function StatCard({ division, grade, data }: StatCardProps) {
   return (
     <Card>
       <CardHeader>
-        <Heading size="md" textAlign="center">
+        <Heading size='md' textAlign='center'>
           {division}({grade + 2}학년)
         </Heading>
       </CardHeader>
       <Divider opacity={0.15} />
       <CardBody>
         <TableContainer>
-          <Table size="sm" sx={tableStyles}>
+          <Table size='sm' sx={tableStyles}>
             <Thead>
               <Tr>
                 <Th>연도</Th>
@@ -122,13 +104,18 @@ function StatCard({ division, grade, data }: StatCardProps) {
                 //@ts-ignore
                 data.map(([year, grade, capacity, applicants]) => {
                   const invalid = capacity === 0;
+                  const newest = year === 2024;
                   return (
                     <Tr key={year.toString()}>
                       <Td>{year}</Td>
-                      <Td>{invalid ? '-' : applicants}</Td>
+                      <Td>{invalid ? '-' : newest ? ' ' : applicants}</Td>
                       <Td>{capacity}</Td>
                       <Td>
-                        {invalid ? '-' : (applicants / capacity).toFixed(2)}
+                        {invalid
+                          ? '-'
+                          : newest
+                          ? ' '
+                          : (applicants / capacity).toFixed(2)}
                       </Td>
                     </Tr>
                   );
@@ -144,7 +131,7 @@ function StatCard({ division, grade, data }: StatCardProps) {
 
 const NotFound = React.memo(function NotFound() {
   return (
-    <Text as="b" textAlign="center">
+    <Text as='b' textAlign='center'>
       유효한 결과가 없습니다.
       <br />
       검색어가 올바른지 확인해주세요.

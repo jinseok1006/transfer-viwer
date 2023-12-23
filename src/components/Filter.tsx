@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useFilterStore, useFilterStateStore } from '../store/filter';
-import { COLLEGES } from '../assets/collegeIndex';
+import { COLLEGES } from '../../assets/collegeIndex';
 
 const GRADES = [0, 1, 2] as const;
 
@@ -53,17 +53,17 @@ const SearchFilter = React.memo(
   ({ searchFilter, changeSearch, resetFilter }: SearchFilterProps) => (
     <>
       <Box>
-        <Heading size="sm" mb={3}>
+        <Heading size='sm' mb={3}>
           검색
         </Heading>
         <Input
-          placeholder="학과명"
+          placeholder='학과명'
           value={searchFilter}
           onChange={changeSearch}
         />
       </Box>
-      <Flex justifyContent="flex-end">
-        <Button size="sm" colorScheme="red" onClick={resetFilter}>
+      <Flex justifyContent='flex-end'>
+        <Button size='sm' colorScheme='red' onClick={resetFilter}>
           초기화
         </Button>
       </Flex>
@@ -79,14 +79,14 @@ const GradeFilter = React.memo(
   ({ toggleGrade, gradeFilter }: GradeFilterProps) => {
     return (
       <Box>
-        <Heading size="sm" mb={3}>
+        <Heading size='sm' mb={3}>
           학년
         </Heading>
         <Wrap gap={4}>
           {GRADES.map((grade) => (
             <WrapItem key={grade}>
               <Button
-                size="sm"
+                size='sm'
                 onClick={() => toggleGrade(grade)}
                 isActive={grade === gradeFilter}
               >
@@ -108,14 +108,14 @@ const CollegeFilter = React.memo(
   ({ collegeFilter, toggleCollege }: CollegeFilterProps) => {
     return (
       <Box>
-        <Heading size="sm" mb={3}>
+        <Heading size='sm' mb={3}>
           대학
         </Heading>
         <Wrap gap={4}>
           {COLLEGES.map((col) => (
             <WrapItem key={col}>
               <Button
-                size="sm"
+                size='sm'
                 name={col}
                 isActive={col === collegeFilter}
                 onClick={() => toggleCollege(col)}

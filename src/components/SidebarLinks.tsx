@@ -13,33 +13,33 @@ export default function SidebarLinks({ onClose }: SidebarLinksProps) {
   return (
     <Stack spacing={2}>
       <SidebarLink
-        name="경쟁률"
-        to="/"
+        name='경쟁률'
+        to='/'
         onClose={onClose}
         icon={<IoBarChartOutline size={20} />}
       />
       <SidebarLink
-        name="면접전략(공사중)"
-        to="/strategy"
+        name='면접정보(공사중)'
+        to='/interview'
         onClose={onClose}
         icon={<LuMessagesSquare size={20} />}
         disabled
       />
       <SidebarLink
-        name="면책조항"
-        to="/disclaimer"
+        name='면책조항'
+        to='/disclaimer'
         onClose={onClose}
         icon={<BsShieldExclamation size={20} />}
       />
       <SidebarLink
-        name="데이터 출처"
-        to="/data-source"
+        name='데이터 출처'
+        to='/data-source'
         onClose={onClose}
         icon={<HiOutlineDocumentText size={20} />}
       />
       <SidebarLink
-        name="오픈소스 라이선스"
-        to="/license"
+        name='오픈소스 라이선스'
+        to='/license'
         onClose={onClose}
         icon={<IoCodeSlashOutline size={20} />}
       />
@@ -67,7 +67,7 @@ function SidebarLink({
 
   return (
     <Stack
-      direction="row"
+      direction='row'
       as={RouterLink}
       to={to}
       onClick={onClose}
@@ -79,13 +79,13 @@ function SidebarLink({
       _hover={{
         bgColor: 'gray.100',
       }}
-      alignItems="center"
+      alignItems='center'
       spacing={2}
       pointerEvents={disabled ? 'none' : 'unset'}
-      userSelect="none"
+      userSelect='none'
     >
       {icon}
-      <Text fontSize="md">{name}</Text>
+      <Text fontSize='md'>{name}</Text>
     </Stack>
   );
 }
