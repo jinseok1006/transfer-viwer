@@ -15,9 +15,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { COLLEGE_INDEX } from '../../assets/collegeIndex';
+import { Link } from 'react-router-dom';
 
 import { useFilterStateStore } from '../store/filter';
 import { useTransferStore } from '../store/transfer';
+import type { TransferData } from '../store/transfer';
 
 export default function StatCardsContainer() {
   const transferData = useTransferStore((state) => state)!;
@@ -46,30 +48,27 @@ export default function StatCardsContainer() {
   }
 
   // +학년 필터된 transferData
-  const filteredStats = filteredDivisions.map((division) => ({
-    ...division,
-    data: division.data.filter((e) => e[1] === gradeFilter),
-  }));
+  const filteredStats = filteredDivisions
+    .map((division) => ({
+      ...division,
+      data: division.data.filter((e) => e[1] === gradeFilter),
+    }))
+    .filter((division) => division.data.length > 0);
 
-  return filteredStats.map((stat) => {
-    if (stat.data.length === 0) return null;
-
-    const grade = stat.data[0][1];
-    return (
-      <StatCard
-        key={stat.division.toString()}
-        division={stat.division}
-        data={stat.data}
-        grade={grade}
-      />
-    );
-  });
+  return filteredStats.map((stat) => (
+    <StatCard
+      key={stat.division.toString()}
+      division={stat.division}
+      data={stat.data}
+      grade={stat.data[0][1]}
+    />
+  ));
 }
 // TODO: viewport하단에 닿으면 queue에 있던것을 몇개 빼내서 렌더링(무한스크롤)
 
 interface StatCardProps {
   division: string;
-  data: number[][];
+  data: TransferData[];
   grade: number;
 }
 
@@ -85,6 +84,8 @@ function StatCard({ division, grade, data }: StatCardProps) {
       <CardHeader>
         <Heading size='md' textAlign='center'>
           {division}({grade + 2}학년)
+          {/* <Link to={`/interview/${division}`}>
+          </Link> */}
         </Heading>
       </CardHeader>
       <Divider opacity={0.15} />
@@ -102,30 +103,40 @@ function StatCard({ division, grade, data }: StatCardProps) {
             <Tbody>
               {
                 //@ts-ignore
-                data.map(([year, grade, capacity, applicants]) => {
-                  const invalid = capacity === 0;
-                  const newest = year === 2024;
-                  return (
-                    <Tr key={year.toString()}>
-                      <Td>{year}</Td>
-                      <Td>{invalid ? '-' : newest ? ' ' : applicants}</Td>
-                      <Td>{capacity}</Td>
-                      <Td>
-                        {invalid
-                          ? '-'
-                          : newest
-                          ? ' '
-                          : (applicants / capacity).toFixed(2)}
-                      </Td>
-                    </Tr>
-                  );
-                })
+                data.map(([year, grade, capacity, applicants]) => (
+                  <StatCardRow
+                    key={year.toString()}
+                    year={year}
+                    capacity={capacity}
+                    applicants={applicants}
+                  />
+                ))
               }
             </Tbody>
           </Table>
         </TableContainer>
       </CardBody>
     </Card>
+  );
+}
+
+interface StatCardRowProps {
+  year: number;
+  capacity: number;
+  applicants: number;
+}
+
+function StatCardRow({ year, capacity, applicants }: StatCardRowProps) {
+  const invalid = capacity === 0;
+  const newest = year === 2024;
+  const rate = invalid ? null : (applicants / capacity).toFixed(2);
+  return (
+    <Tr>
+      <Td>{year}</Td>
+      <Td>{invalid ? '-' : newest ? ' ' : applicants}</Td>
+      <Td>{capacity}</Td>
+      <Td>{invalid ? '-' : newest ? ' ' : rate}</Td>
+    </Tr>
   );
 }
 

@@ -23,7 +23,6 @@ export default function SidebarLinks({ onClose }: SidebarLinksProps) {
         to='/interview'
         onClose={onClose}
         icon={<LuMessagesSquare size={20} />}
-        disabled
       />
       <SidebarLink
         name='면책조항'
@@ -36,12 +35,14 @@ export default function SidebarLinks({ onClose }: SidebarLinksProps) {
         to='/data-source'
         onClose={onClose}
         icon={<HiOutlineDocumentText size={20} />}
+        disabled
       />
       <SidebarLink
         name='오픈소스 라이선스'
         to='/license'
         onClose={onClose}
         icon={<IoCodeSlashOutline size={20} />}
+        disabled
       />
     </Stack>
   );

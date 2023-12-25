@@ -9,10 +9,9 @@ export default function TransferViewer() {
   return (
     <>
       <Head title='전북대 전학/전과 경쟁률 현황' />
-      <Stack mt={2} direction='column' spacing={4} minH='800px'>
+      <Stack direction='column' spacing={4} minH='800px' mt={4}>
         <Filter />
         <StatCardsContainer />
-        <Box h='50px' />
       </Stack>
     </>
   );

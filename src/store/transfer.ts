@@ -6,7 +6,7 @@ export interface TransferStat {
   data: TransferData[];
 }
 
-type TransferData = [Year, Grade, Capacity, Applicants];
+export type TransferData = [Year, Grade, Capacity, Applicants];
 type Year = number;
 type Grade = 0 | 1 | 2;
 type Applicants = number;
