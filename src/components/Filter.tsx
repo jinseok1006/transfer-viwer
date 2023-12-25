@@ -111,7 +111,7 @@ const CollegeFilter = React.memo(
         <Heading size='sm' mb={3}>
           대학
         </Heading>
-        <Wrap gap={4}>
+        <Wrap gap={4} w='90%'>
           {COLLEGES.map((col) => (
             <WrapItem key={col}>
               <Button
