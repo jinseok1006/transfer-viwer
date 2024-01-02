@@ -1,4 +1,4 @@
-import transferData from '../../assets/transferData.json';
+import transferData from '../assets/transferData.json';
 import { create } from 'zustand';
 
 export interface TransferStat {

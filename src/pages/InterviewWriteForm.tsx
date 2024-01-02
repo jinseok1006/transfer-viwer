@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Stack,
@@ -12,19 +12,18 @@ import {
   Textarea,
   FormControl,
   FormLabel,
-  Input,
-  FormHelperText,
-  Modal,
 } from '@chakra-ui/react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import NotFound from './NotFound';
-import { COLLEGE_INDEX } from '../../assets/collegeIndex';
+import { COLLEGE_INDEX } from '../assets/collegeIndex';
 import { contains } from '../utils';
+import { submitInterviewPost } from '../api/api';
+import Head from '../components/Head';
 
 const YEARS = [2020, 2021, 2022, 2023, 2024];
 const GRADES = [2, 3, 4];
 
-export default function InterviewWriteForm() {
+export default function InterviewWriteFormPage() {
   const [searchParams] = useSearchParams();
   const division = searchParams.get('division');
 
@@ -32,21 +31,36 @@ export default function InterviewWriteForm() {
   if (!COLLEGE_INDEX.some((col) => contains(col.divisions, division)))
     return <NotFound />;
 
+  return (
+    <>
+      <Head title='면접정보 작성' />
+      <InterviewWriteForm division={division} />
+    </>
+  );
+}
+
+function InterviewWriteForm({ division }: { division: string }) {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmtting] = useState(false);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const urlSearchParams = new URLSearchParams(
-      Array.from(formData) as string[][]
-    );
+    const payload = new URLSearchParams(Array.from(formData) as string[][]);
 
-    const resp = await fetch('http://localhost:3000', {
-      method: 'post',
-      body: urlSearchParams,
-    });
+    if (!confirm('정말로 등록할까요? 수정이 어렵습니다.')) return;
 
-    const data = await resp.json();
-    console.log(data);
+    setIsSubmtting(true);
+    try {
+      await submitInterviewPost(payload);
+      alert('등록되었습니다.');
+      navigate(`/interview/view?division=${division}`);
+    } catch (err) {
+      console.log(err);
+      alert('등록실패\n' + JSON.stringify(err));
+    }
+    setIsSubmtting(false);
   };
 
   return (
@@ -126,11 +140,10 @@ export default function InterviewWriteForm() {
           </Stack>
 
           <Box pt={3}>
-            <Button width='100%' type='submit'>
+            <Button width='100%' type='submit' isLoading={isSubmitting}>
               등록하기
             </Button>
           </Box>
-          {/* 얼럿 다이얼로그 추가 */}
         </form>
       </CardBody>
     </Card>

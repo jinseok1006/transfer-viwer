@@ -14,12 +14,12 @@ import {
   Td,
   Text,
 } from '@chakra-ui/react';
-import { COLLEGE_INDEX } from '../../assets/collegeIndex';
-import { Link } from 'react-router-dom';
+import { COLLEGE_INDEX } from '../assets/collegeIndex';
 
 import { useFilterStateStore } from '../store/filter';
 import { useTransferStore } from '../store/transfer';
 import type { TransferData } from '../store/transfer';
+import { Link } from 'react-router-dom';
 
 export default function StatCardsContainer() {
   const transferData = useTransferStore((state) => state)!;
@@ -83,9 +83,9 @@ function StatCard({ division, grade, data }: StatCardProps) {
     <Card>
       <CardHeader>
         <Heading size='md' textAlign='center'>
-          {division}({grade + 2}학년)
-          {/* <Link to={`/interview/${division}`}>
-          </Link> */}
+          <Link to={`/interview/${division}`}>
+            {division}({grade + 2}학년)
+          </Link>
         </Heading>
       </CardHeader>
       <Divider opacity={0.15} />

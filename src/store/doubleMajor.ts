@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAsync } from '../hooks/useAsync';
+import { useAsync } from '../hooks/useAsyncCreate';
 
 interface ISemasterRate {
   semaster: number;

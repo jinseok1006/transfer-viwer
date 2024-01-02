@@ -1,14 +1,16 @@
-import { Stack, Box } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 
 import Filter from '../components/Filter';
 import StatCardsContainer from '../components/StatsCards';
 
-import Head from '../components/Head';
+import { Helmet } from 'react-helmet-async';
 
 export default function TransferViewer() {
   return (
     <>
-      <Head title='전북대 전학/전과 경쟁률 현황' />
+      <Helmet>
+        <title>전북대학교 전학/전과 현황</title>
+      </Helmet>
       <Stack direction='column' spacing={4} minH='800px' mt={4}>
         <Filter />
         <StatCardsContainer />

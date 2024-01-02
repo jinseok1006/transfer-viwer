@@ -19,7 +19,7 @@ export default function SidebarLinks({ onClose }: SidebarLinksProps) {
         icon={<IoBarChartOutline size={20} />}
       />
       <SidebarLink
-        name='면접정보(공사중)'
+        name='면접정보'
         to='/interview'
         onClose={onClose}
         icon={<LuMessagesSquare size={20} />}
