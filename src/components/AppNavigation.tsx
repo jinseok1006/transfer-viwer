@@ -7,7 +7,6 @@ import {
   Spacer,
   IconButton,
   Image,
-  Wrap,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { HamburgerIcon } from '@chakra-ui/icons';
