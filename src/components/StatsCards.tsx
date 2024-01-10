@@ -97,9 +97,7 @@ function StatCard({ division, grade, data }: StatCardProps) {
     <Card>
       <CardHeader>
         <Heading size='md' textAlign='center'>
-          <Link to={`/interview/${division}`}>
-            {division}({grade + 2}학년)
-          </Link>
+          {division}({grade + 2}학년)
         </Heading>
       </CardHeader>
       <Divider opacity={0.15} />
