@@ -25,8 +25,6 @@ import {
 } from '../store/transfer-statistics';
 import type { TransferData } from '../store/transfer-statistics';
 
-import { Link } from 'react-router-dom';
-
 export default function StatCardsContainer() {
   const transferStatisticsData = useTransferStatisticsStore(
     (state) => state.data
