@@ -13,8 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useFilterStore, useFilterStateStore } from '../store/filter';
-import { COLLEGES } from '../assets/collegeIndex';
-
+import { COLLEGES } from '../constants/colleges';
 const GRADES = [0, 1, 2] as const;
 
 // TODO: 필터 분리하고 memo하기

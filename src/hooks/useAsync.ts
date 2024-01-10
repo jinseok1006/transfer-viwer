@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+
 export default function useAsync<T>(
-  callback: () => Promise<T>,
+  callback: () => Promise<Response>,
   skip = false
 ): [boolean, unknown, T | null, () => Promise<void>] {
   const [loading, setLoading] = useState(false);
@@ -11,13 +12,15 @@ export default function useAsync<T>(
     setLoading(false);
     setError(null);
     try {
-      const data = await callback();
+      const response = await callback();
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
       setData(data);
-      setError(null);
     } catch (err) {
       setError(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

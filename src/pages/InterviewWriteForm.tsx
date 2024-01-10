@@ -15,21 +15,24 @@ import {
 } from '@chakra-ui/react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import NotFound from './NotFound';
-import { COLLEGE_INDEX } from '../assets/collegeIndex';
-import { contains } from '../utils';
+
 import { submitInterviewPost } from '../api/api';
 import Head from '../components/Head';
+import { useDivisionsStore } from '../store/transfer-statistics';
 
 const YEARS = [2020, 2021, 2022, 2023, 2024];
 const GRADES = [2, 3, 4];
 
 export default function InterviewWriteFormPage() {
+  const divisions = useDivisionsStore((state) => state.divisions);
   const [searchParams] = useSearchParams();
   const division = searchParams.get('division');
 
   if (!division) return <NotFound />;
-  if (!COLLEGE_INDEX.some((col) => contains(col.divisions, division)))
-    return <NotFound />;
+
+  if (!divisions.includes(division)) return <NotFound />;
+  // if (!COLLEGE_INDEX.some((col) => contains(col.divisions, division)))
+  //   return <NotFound />;
 
   return (
     <>
@@ -48,6 +51,14 @@ function InterviewWriteForm({ division }: { division: string }) {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const payload = new URLSearchParams(Array.from(formData) as string[][]);
+
+    payload.append(
+      'yearPrivacy',
+      (payload.get('year') === 'private').toString()
+    );
+    if (payload.get('year') === 'private') {
+      payload.set('year', '');
+    }
 
     if (!confirm('정말로 등록할까요? 수정이 어렵습니다.')) return;
 

@@ -2,7 +2,8 @@ import { Card, CardBody, Flex, Text, Divider, Box } from '@chakra-ui/react';
 
 export interface InterviewPost {
   division: string;
-  year: number | 'private';
+  year?: number;
+  yearPrivacy: boolean;
   grade: number;
   score: 'early4' | 'late4' | 'early3' | 'mid3' | 'late3' | 'less3' | 'private';
   takeLecture: boolean;
@@ -22,6 +23,7 @@ export const score2Str = {
 export default function InterviewPostCard({
   division,
   year,
+  yearPrivacy,
   grade,
   score,
   takeLecture,
@@ -39,17 +41,11 @@ export default function InterviewPostCard({
               {division}({grade}학년)
             </Text>
           </Flex>
-          {/* <Flex>
-            <Text fontWeight='bold' flexBasis='34%' fontSize='md'>
-              지원학년
-            </Text>
-            <Text flex='1'>{grade}학년</Text>
-          </Flex> */}
           <Flex>
             <Text fontWeight='bold' flexBasis='34%'>
               지원년도
             </Text>
-            <Text flex='1'>{year === 'private' ? '비공개' : `${year}년`}</Text>
+            <Text flex='1'>{yearPrivacy ? '비공개' : `${year}년`}</Text>
           </Flex>
           <Flex>
             <Text fontWeight='bold' flexBasis='34%'>
@@ -67,11 +63,11 @@ export default function InterviewPostCard({
         <Divider mt={3} />
         <Box pt={3}>
           <Text fontWeight='bold'>면접 후기</Text>
-          <>
-            {body.split('\n').map((line, i) => (
-              <Text key={i}>{line}</Text>
-            ))}
-          </>
+          {body
+            .split('\n')
+            .map((line, i) =>
+              line === '' ? <br key={i} /> : <Text key={i}>{line}</Text>
+            )}
         </Box>
       </CardBody>
     </Card>

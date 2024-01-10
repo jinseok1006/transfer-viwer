@@ -11,16 +11,17 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-
-import { COLLEGE_INDEX } from '../assets/collegeIndex';
-import InterviewPostCard from '../components/InterviewPostCard';
+import InterviewPostCard, {
+  InterviewPost,
+} from '../components/InterviewPostCard';
 import { Link } from 'react-router-dom';
 import NoInterviewPost from '../components/NoInterviewPost';
 import useAsync from '../hooks/useAsync';
 import Head from '../components/Head';
 import { fetchNewestInterviewPosts } from '../api/api';
 import Error from '../components/Error';
-const divisionList = COLLEGE_INDEX.flatMap((col) => col.divisions);
+import Loading from '../components/Loading';
+import { useDivisionsStore } from '../store/transfer-statistics';
 
 interface DivisionSearchForm {
   onSubmit: (e: React.FormEvent) => void;
@@ -54,6 +55,7 @@ export default function InterviewIndexPage() {
 }
 
 function InterviewIndex() {
+  const divisions = useDivisionsStore((state) => state.divisions);
   const [search, setSearch] = useState('');
 
   const onSubmit = (e: React.FormEvent) => {
@@ -63,7 +65,7 @@ function InterviewIndex() {
     setSearch((value as string).toUpperCase());
   };
 
-  const filteredDivision = divisionList.filter((div) => div.includes(search));
+  const filteredDivision = divisions.filter((div) => div.includes(search));
 
   return (
     <>
@@ -97,7 +99,7 @@ function NewestInterviewPostsContainer() {
 }
 
 function NewestInterviewPosts() {
-  const [loading, error, newestInterviewPosts] = useAsync(
+  const [loading, error, newestInterviewPosts] = useAsync<InterviewPost[]>(
     fetchNewestInterviewPosts
   );
 
@@ -105,7 +107,7 @@ function NewestInterviewPosts() {
     return <Error error={error} />;
   }
   if (loading || !newestInterviewPosts) {
-    return <p>로딩중</p>;
+    return <Loading />;
   }
 
   if (newestInterviewPosts.length === 0) {
@@ -115,10 +117,14 @@ function NewestInterviewPosts() {
   return (
     <Stack direction='column' spacing={5}>
       {newestInterviewPosts.map(
-        ({ division, year, grade, score, takeLecture, body }, i) => (
+        (
+          { division, year, yearPrivacy, grade, score, takeLecture, body },
+          i
+        ) => (
           <InterviewPostCard
             key={i}
             division={division}
+            yearPrivacy={yearPrivacy}
             year={year}
             grade={grade}
             score={score}

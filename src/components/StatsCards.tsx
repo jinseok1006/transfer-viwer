@@ -13,20 +13,29 @@ import {
   Tbody,
   Td,
   Text,
+  Stack,
+  Center,
 } from '@chakra-ui/react';
-import { COLLEGE_INDEX } from '../assets/collegeIndex';
 
 import { useFilterStateStore } from '../store/filter';
-import { useTransferStore } from '../store/transfer';
-import type { TransferData } from '../store/transfer';
+
+import {
+  useCollegeDivisionStore,
+  useTransferStatisticsStore,
+} from '../store/transfer-statistics';
+import type { TransferData } from '../store/transfer-statistics';
+
 import { Link } from 'react-router-dom';
 
 export default function StatCardsContainer() {
-  const transferData = useTransferStore((state) => state)!;
+  const transferStatisticsData = useTransferStatisticsStore(
+    (state) => state.data
+  )!;
+  const collegeDivisionsData = useCollegeDivisionStore((state) => state.data)!;
   const { gradeFilter, collegeFilter, searchFilter } = useFilterStateStore();
 
   // 대학별 학과명 필터 생성
-  const divisionFilter: readonly string[] = COLLEGE_INDEX.find(
+  const divisionFilter: readonly string[] = collegeDivisionsData.find(
     (idx) => idx.college === collegeFilter
   )!.divisions;
 
@@ -39,7 +48,7 @@ export default function StatCardsContainer() {
         );
 
   // 학과명 필터된 transferData
-  const filteredDivisions = transferData.filter((stat) =>
+  const filteredDivisions = transferStatisticsData.filter((stat) =>
     activeDivisions.includes(stat.division)
   );
 
@@ -55,15 +64,20 @@ export default function StatCardsContainer() {
     }))
     .filter((division) => division.data.length > 0);
 
-  return filteredStats.map((stat) => (
-    <StatCard
-      key={stat.division.toString()}
-      division={stat.division}
-      data={stat.data}
-      grade={stat.data[0][1]}
-    />
-  ));
+  return (
+    <Stack direction='column' spacing={4} mt={4}>
+      {filteredStats.map(({ division, data }) => (
+        <StatCard
+          key={division}
+          division={division}
+          data={data}
+          grade={data[0][1]}
+        />
+      ))}
+    </Stack>
+  );
 }
+//
 // TODO: viewport하단에 닿으면 queue에 있던것을 몇개 빼내서 렌더링(무한스크롤)
 
 interface StatCardProps {
@@ -142,10 +156,12 @@ function StatCardRow({ year, capacity, applicants }: StatCardRowProps) {
 
 const NotFound = React.memo(function NotFound() {
   return (
-    <Text as='b' textAlign='center'>
-      유효한 결과가 없습니다.
-      <br />
-      검색어가 올바른지 확인해주세요.
-    </Text>
+    <Center mt={4}>
+      <Text as='b' textAlign='center'>
+        유효한 결과가 없습니다.
+        <br />
+        검색어가 올바른지 확인해주세요.
+      </Text>
+    </Center>
   );
 });

@@ -1,14 +1,14 @@
-import axios from 'axios';
-import type { InterviewPost } from '../components/InterviewPostCard';
+const API_SERVER_URL = import.meta.env.VITE_API_SERVER;
 
-const API_SERVER = import.meta.env.VITE_API_SERVER;
+export const fetchInterviewPost = (divisionName: string) =>
+  fetch(`${API_SERVER_URL}/transfer?division=${divisionName}`);
 
-export const fetchInterviewPost = async (divisionName: string) =>
-  (await axios.get(`${API_SERVER}/transfer?division=${divisionName}`))
-    .data as InterviewPost[];
+export const fetchNewestInterviewPosts = () =>
+  fetch(`${API_SERVER_URL}/transfer/newest`);
 
-export const fetchNewestInterviewPosts = async () =>
-  (await axios.get(`${API_SERVER}/transfer/newest`)).data as InterviewPost[];
-
-export const submitInterviewPost = async (payload: URLSearchParams) =>
-  axios.post(`${API_SERVER}/transfer`, payload);
+export const submitInterviewPost = (payload: URLSearchParams) =>
+  fetch(`${API_SERVER_URL}/transfer`, {
+    method: 'post',
+    body: payload,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
