@@ -6,6 +6,7 @@ import {
   Heading,
   Spacer,
   IconButton,
+  Image,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { HamburgerIcon } from '@chakra-ui/icons';
@@ -33,11 +34,22 @@ interface AppBarProps {
 const AppBar = React.memo(function AppBar({ onOpen }: AppBarProps) {
   return (
     <>
-      <Box maxW='md' mx='auto' mb={3} bgColor='white' boxShadow='xs'>
+      <Box
+        maxW='md'
+        mx='auto'
+        bgColor='white'
+        boxShadow='xs'
+        borderRadius='0px 0px 8px 8px'
+      >
         <Flex justify='space-between' alignItems='center' py={2} px={6}>
-          <Heading fontWeight='bold' size='md' as={RouterLink} to='/'>
-            🔥 전북대 전학/전과 현황
-          </Heading>
+          <RouterLink to='/'>
+            <Flex alignItems='center' gap={1}>
+              <Image src='/logo.png' w='24px' />
+              <Heading fontWeight='bold' size='md'>
+                전북대 전학/전과 현황
+              </Heading>
+            </Flex>
+          </RouterLink>
           <Spacer />
           <IconButton
             icon={<HamburgerIcon />}

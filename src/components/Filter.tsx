@@ -13,8 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useFilterStore, useFilterStateStore } from '../store/filter';
-import { COLLEGES } from '../../assets/collegeIndex';
-
+import { COLLEGES } from '../constants/colleges';
 const GRADES = [0, 1, 2] as const;
 
 // TODO: 필터 분리하고 memo하기
@@ -111,7 +110,7 @@ const CollegeFilter = React.memo(
         <Heading size='sm' mb={3}>
           대학
         </Heading>
-        <Wrap gap={4}>
+        <Wrap gap={4} w='90%'>
           {COLLEGES.map((col) => (
             <WrapItem key={col}>
               <Button

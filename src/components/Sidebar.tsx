@@ -54,15 +54,15 @@ interface SidebarHeaderProps {
 }
 function SidebarHeader({ onClose }: SidebarHeaderProps) {
   return (
-    <Flex alignItems="center">
-      <Heading fontWeight="bold" fontSize="xl">
+    <Flex alignItems='center'>
+      <Heading fontWeight='bold' fontSize='xl'>
         메뉴
       </Heading>
       <Spacer />
       <IconButton
         icon={<CloseIcon />}
-        aria-label="close"
-        variant="ghost"
+        aria-label='close'
+        variant='ghost'
         onClick={onClose}
       />
     </Flex>
@@ -75,10 +75,10 @@ interface SidebarFooterProps {
 function SidebarFooter({ onClose }: SidebarFooterProps) {
   const mailString = `forstackup@gmail.com`;
   return (
-    <Box color="gray.500" fontSize="xs">
+    <Box color='gray.500' fontSize='xs'>
       <Text>
         Contact:{' '}
-        <Link href={`mailto:${mailString}`} textDecoration="underline">
+        <Link href={`mailto:${mailString}`} textDecoration='underline'>
           {mailString}
         </Link>
       </Text>
@@ -87,8 +87,8 @@ function SidebarFooter({ onClose }: SidebarFooterProps) {
         본 페이지를 이용하는 경우{' '}
         <Link
           as={RouterLink}
-          to="/disclaimer"
-          textDecoration="underline"
+          to='/disclaimer'
+          textDecoration='underline'
           onClick={onClose}
         >
           면책 조항
