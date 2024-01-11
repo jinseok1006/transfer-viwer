@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -14,6 +14,7 @@ import {
 
 import { useFilterStore, useFilterStateStore } from '../store/filter';
 import { COLLEGES } from '../constants/colleges';
+import useDebounce from '../hooks/useDebounce';
 const GRADES = [0, 1, 2] as const;
 
 // TODO: 필터 분리하고 memo하기
@@ -45,29 +46,35 @@ export default function Filter() {
 
 interface SearchFilterProps {
   searchFilter: string;
-  changeSearch: (e: React.FormEvent) => void;
+  changeSearch: (divisionName: string) => void;
   resetFilter: () => void;
 }
 const SearchFilter = React.memo(
-  ({ searchFilter, changeSearch, resetFilter }: SearchFilterProps) => (
-    <>
-      <Box>
-        <Heading size='sm' mb={3}>
-          검색
-        </Heading>
-        <Input
-          placeholder='학과명'
-          value={searchFilter}
-          onChange={changeSearch}
-        />
-      </Box>
-      <Flex justifyContent='flex-end'>
-        <Button size='sm' colorScheme='red' onClick={resetFilter}>
-          초기화
-        </Button>
-      </Flex>
-    </>
-  )
+  ({ changeSearch, resetFilter }: SearchFilterProps) => {
+    const [text, setText] = useState('');
+    useDebounce(text, 400, changeSearch);
+
+    const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const input = e.target;
+      setText(input.value);
+    };
+
+    return (
+      <>
+        <Box>
+          <Heading size='sm' mb={3}>
+            검색
+          </Heading>
+          <Input placeholder='학과명' value={text} onChange={onTextChange} />
+        </Box>
+        <Flex justifyContent='flex-end'>
+          <Button size='sm' colorScheme='red' onClick={resetFilter}>
+            초기화
+          </Button>
+        </Flex>
+      </>
+    );
+  }
 );
 
 interface GradeFilterProps {
