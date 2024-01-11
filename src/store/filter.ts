@@ -12,7 +12,7 @@ interface IFilterStateActions {
   toggleGrade: (grade: number) => void;
   toggleCollege: (college: string) => void;
   resetFilter: () => void;
-  changeSearch: (event: React.FormEvent) => void;
+  changeSearch: (divisionName: string) => void;
 }
 
 export const useFilterStore = create<IFilterState>()((set) => ({
@@ -22,9 +22,9 @@ export const useFilterStore = create<IFilterState>()((set) => ({
   actions: {
     toggleGrade: (inputGrade) => set({ gradeFilter: inputGrade }),
     toggleCollege: (inputCollege) => set({ collegeFilter: inputCollege }),
-    changeSearch: (event) => {
+    changeSearch: (divisionName) => {
       set({
-        searchFilter: (event.target as HTMLInputElement).value,
+        searchFilter: divisionName,
       });
     },
     resetFilter: () =>
