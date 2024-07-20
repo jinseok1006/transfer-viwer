@@ -71,7 +71,9 @@ export const fetchInterviewPostByDepartment = async (
     },
   });
 
-export const fetchInterviewPostByDepartments = async (departments: string[]) =>
+export const fetchInterviewPostByDepartments = async (departments: string[]):Promise<
+ApiResponse<InterviewPost>
+> =>
   client.get(`interview-posts`, {
     filters: {
       departments: {

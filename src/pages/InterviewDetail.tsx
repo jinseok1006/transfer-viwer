@@ -6,7 +6,7 @@ import InterviewPostCard from "../components/InterviewPostCard";
 
 import { useAsync } from "react-use";
 
-import { fetchInterviewPostByDepartment } from "../api/api";
+import { fetchInterviewPostByDepartments } from "../api/api";
 import NoInterviewPost from "../components/NoInterviewPost";
 import Head from "../components/Head";
 import Error from "../components/Error";
@@ -68,7 +68,14 @@ function InterviewInfoContainer({ division }: { division: string }) {
 }
 
 function InterviewInfo({ division }: { division: string }) {
-  const departmentLinksState = useAsync(getDepartmentLinks, ['department-links']);
+  const departmentLinksState = useAsync(getDepartmentLinks);
+  const departmentLinks = departmentLinksState.value;
+  const relatedDepartments = departmentLinks[division];
+  const { loading, error, value } = useAsync(
+    () => fetchInterviewPostByDepartments(relatedDepartments),
+    [relatedDepartments]
+  );
+
 
   if(departmentLinksState.error || !departmentLinksState.value ) {
     return <Error error={departmentLinksState.error} />;
@@ -78,13 +85,11 @@ function InterviewInfo({ division }: { division: string }) {
     return <Loading />;
   }
 
-  const departmentLinks = departmentLinksState.value;
+  // const departmentLinks = departmentLinksState.value;
+  // const relatedDepartments = departmentLinks[division];
 
 
-  const { loading, error, value } = useAsync(
-    () => fetchInterviewPostByDepartment(division),
-    ['interview-posts', division]
-  );
+
 
   if (error || !value) {
     return <Error error={error} />;
@@ -95,9 +100,13 @@ function InterviewInfo({ division }: { division: string }) {
 
   const interviewPosts = extractApiAttribues(value);
 
+  // console.log('success');
+
   if (interviewPosts.length === 0) {
     return <NoInterviewPost />;
   }
+
+
 
   return (
     <>

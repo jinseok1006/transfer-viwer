@@ -11,8 +11,8 @@ export const getCollegeDivisions = () =>
 export const getTransferStatistics = () =>
   fetch(`${STATIC_API_URL}/transfer-statistics.json`);
 
-export const getDepartmentLinks = async ():Promise<DepartmentLink> => {
-  const resp = await fetch(`${STATIC_API_URL}/department-links.json`);
+export const getDepartmentLinks = async (): Promise<DepartmentLink> => {
+  const resp = await fetch(`${STATIC_API_URL}/division-links.json`);
 
   if (!resp.ok) {
     throw new Error(resp.statusText);
