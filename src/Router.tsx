@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Disclaimer from './pages/Disclaimer';
 import NotFound from './pages/NotFound';
 import TransferViewer from './pages/TransferViewer';
-import InterviewInfoPage from './pages/InterviewInfo';
+import InterviewInfoPage from './pages/InterviewDetail';
 import InterviewIndexPage from './pages/InterviewIndex';
 import InterviewWriteFormPage from './pages/InterviewWriteForm';
 
