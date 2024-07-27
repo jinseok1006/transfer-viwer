@@ -6,14 +6,14 @@ import InterviewPostCard from "../components/InterviewPostCard";
 
 import { useAsync } from "react-use";
 
-import { fetchInterviewPostByDepartments } from "../api/api";
+import transferInterviewApi from "../api/transferInterivew";
 import NoInterviewPost from "../components/NoInterviewPost";
 import Head from "../components/Head";
-import Error from "../components/Error";
+import Error from "../components/ErrorBoudary";
 import Loading from "../components/Loading";
-import { useDivisionsStore } from "../store/transfer-statistics";
+import { useDivisionsStore } from "../store/transferStatistics";
 import { extractApiAttribues } from "../utils/util";
-import { getDepartmentLinks } from "../api/static-data";
+import { getDepartmentLinks } from "../api/staticData";
 
 export default function InterviewInfoPage() {
   const divisions = useDivisionsStore((state) => state.divisions);

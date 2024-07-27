@@ -16,9 +16,9 @@ import {
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import NotFound from './NotFound';
 
-import { submitInterviewPost } from '../api/api';
+import transferInterviewApi from '../api/transferInterivew';
 import Head from '../components/Head';
-import { useDivisionsStore } from '../store/transfer-statistics';
+import { useDivisionsStore } from '../store/transferStatistics';
 
 const YEARS = [2020, 2021, 2022, 2023, 2024];
 const GRADES = [2, 3, 4];
@@ -64,7 +64,7 @@ function InterviewWriteForm({ division }: { division: string }) {
 
     setIsSubmtting(true);
     try {
-      await submitInterviewPost(payload);
+      await transferInterviewApi.submitPost(payload);
       alert('등록되었습니다.');
       navigate(`/interview/view?division=${division}`);
     } catch (err) {

@@ -1,28 +1,40 @@
-import React, { Suspense } from 'react';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 
-import Layout from './pages/Layout';
-import Loading from './components/Loading';
+import Layout from "./views/Layout";
+import ErrorComponent from "./components/ErrorBoudary";
 
-const Router = React.lazy(() => import('./Router'));
+import Disclaimer from "./views/Disclaimer";
+import NotFound from "./views/NotFound";
+import TransferViewer from "./views/TransferViewer";
+import InterviewInfoPage from "./views/InterviewDetail";
+import InterviewIndexPage from "./views/InterviewIndex";
+import InterviewWriteFormPage from "./views/InterviewWriteForm";
+
+const routeElements = (
+  <Route path="/" element={<Layout />}>
+    <Route path="/*" errorElement={<ErrorComponent />}>
+      <Route
+        index
+        element={<TransferViewer />}
+      />
+      <Route path="disclaimer" element={<Disclaimer />} />
+      <Route path="interview" element={<InterviewIndexPage />} />
+      <Route path="interview/view" element={<InterviewInfoPage />} />
+      <Route path="interview/write-form" element={<InterviewWriteFormPage />} />
+      <Route path="*" element={<NotFound />} />
+    </Route>
+  </Route>
+);
+
+const router = createBrowserRouter(createRoutesFromElements(routeElements));
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='*' element={<Layout />}>
-          <Route
-            path='*'
-            element={
-              <Suspense fallback={<Loading />}>
-                <Router />
-              </Suspense>
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

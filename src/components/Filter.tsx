@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -10,11 +10,11 @@ import {
   Input,
   Flex,
   WrapItem,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { useFilterStore, useFilterStateStore } from '../store/filter';
-import { COLLEGES } from '../constants/colleges';
-import useDebounce from '../hooks/useDebounce';
+import { useFilterStore, useFilterStateStore } from "../store/filter";
+import { COLLEGES } from "../constants/colleges";
+import { useDebounce } from "react-use";
 const GRADES = [0, 1, 2] as const;
 
 // TODO: 필터 분리하고 memo하기
@@ -51,24 +51,29 @@ interface SearchFilterProps {
 }
 const SearchFilter = React.memo(
   ({ changeSearch, resetFilter }: SearchFilterProps) => {
-    const [text, setText] = useState('');
-    useDebounce(text, 400, changeSearch);
+    const [text, setText] = useState("");
+    useDebounce(() => changeSearch(text), 400, [text]);
 
     const onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const input = e.target;
       setText(input.value);
     };
 
+    const onClear = () => {
+      setText("");
+      resetFilter();
+    };
+
     return (
       <>
         <Box>
-          <Heading size='sm' mb={3}>
+          <Heading size="sm" mb={3}>
             검색
           </Heading>
-          <Input placeholder='학과명' value={text} onChange={onTextChange} />
+          <Input placeholder="학과명" value={text} onChange={onTextChange} />
         </Box>
-        <Flex justifyContent='flex-end'>
-          <Button size='sm' colorScheme='red' onClick={resetFilter}>
+        <Flex justifyContent="flex-end">
+          <Button size="sm" colorScheme="red" onClick={onClear}>
             초기화
           </Button>
         </Flex>
@@ -85,14 +90,14 @@ const GradeFilter = React.memo(
   ({ toggleGrade, gradeFilter }: GradeFilterProps) => {
     return (
       <Box>
-        <Heading size='sm' mb={3}>
+        <Heading size="sm" mb={3}>
           학년
         </Heading>
         <Wrap gap={4}>
           {GRADES.map((grade) => (
             <WrapItem key={grade}>
               <Button
-                size='sm'
+                size="sm"
                 onClick={() => toggleGrade(grade)}
                 isActive={grade === gradeFilter}
               >
@@ -114,14 +119,14 @@ const CollegeFilter = React.memo(
   ({ collegeFilter, toggleCollege }: CollegeFilterProps) => {
     return (
       <Box>
-        <Heading size='sm' mb={3}>
+        <Heading size="sm" mb={3}>
           대학
         </Heading>
-        <Wrap gap={4} w='90%'>
+        <Wrap gap={4} w="90%">
           {COLLEGES.map((col) => (
             <WrapItem key={col}>
               <Button
-                size='sm'
+                size="sm"
                 name={col}
                 isActive={col === collegeFilter}
                 onClick={() => toggleCollege(col)}

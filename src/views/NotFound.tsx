@@ -1,6 +1,6 @@
-import { Box, Text, Heading, Image, Center, Button } from '@chakra-ui/react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import Head from '../components/Head';
+import { Box, Text, Heading, Image, Center, Button } from "@chakra-ui/react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import Head from "../components/Head";
 
 export default function NotFound() {
   const { pathname, search } = useLocation();
@@ -10,11 +10,8 @@ export default function NotFound() {
     <>
       <Head title="404 Not Found" />
       <Box mt={5}>
-        <Heading textAlign="center" size="md">
-          404 Not Found
-        </Heading>
         <Center>
-          <Image src="/undraw_on_the_office_re_cxds.svg" boxSize="300px" />
+          <Image src="/not_found.svg" boxSize="300px" />
         </Center>
 
         <Text my={5} textAlign="center" px={4}>

@@ -16,10 +16,10 @@ import { Link } from "react-router-dom";
 import NoInterviewPost from "../components/NoInterviewPost";
 
 import Head from "../components/Head";
-import { fetchNewestInterviewPosts } from "../api/api";
-import Error from "../components/Error";
+import transferInterviewApi from "../api/transferInterivew";
+// import Error from "../components/ErrorBoudary";
 import Loading from "../components/Loading";
-import { useDivisionsStore } from "../store/transfer-statistics";
+import { useDivisionsStore } from "../store/transferStatistics";
 
 import { useAsync } from "react-use";
 import { extractApiAttribues } from "../utils/util";
@@ -102,15 +102,16 @@ function NewestInterviewPostsContainer() {
 
 function NewestInterviewPosts() {
   const { loading, error, value } = useAsync(
-    () => fetchNewestInterviewPosts(),
-    ["newest-interview-posts"]
+    () => transferInterviewApi.getNewestPosts(),
+    []
   );
 
-  if (error || !value) {
-    return <Error error={error} />;
-  }
   if (loading) {
     return <Loading />;
+  }
+
+  if (error || !value) {
+    throw new Error("데이터 로딩 실패");
   }
 
   const newestInterviewPosts = extractApiAttribues(value);
@@ -123,7 +124,15 @@ function NewestInterviewPosts() {
     <Stack direction="column" spacing={5}>
       {newestInterviewPosts.map(
         (
-          { department, year, isYearPrivate, grade, score, hasTakenCourse, content },
+          {
+            department,
+            year,
+            isYearPrivate,
+            grade,
+            score,
+            hasTakenCourse,
+            content,
+          },
           i
         ) => (
           <InterviewPostCard
