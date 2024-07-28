@@ -111,7 +111,7 @@ function NewestInterviewPosts() {
   }
 
   if (error || !value) {
-    throw new Error("데이터 로딩 실패");
+    throw new Error("transferInterviewApi.getNewestPosts 데이터 로딩 실패");
   }
 
   const newestInterviewPosts = extractApiAttribues(value);
