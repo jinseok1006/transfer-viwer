@@ -12,8 +12,8 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
-import { useFilterStore, useFilterStateStore } from "../store/filter";
-import { COLLEGES } from "../constants/colleges";
+import { useFilterStore, useFilterStateStore } from "../../store/filter";
+import { COLLEGES } from "../../constants/colleges";
 import { useDebounce } from "react-use";
 const GRADES = [0, 1, 2] as const;
 

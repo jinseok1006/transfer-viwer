@@ -1,7 +1,7 @@
 import { Container, Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 
-import AppNavigation from "../components/AppNavigation";
+import AppNavigation from "../components/nav/AppNavigation";
 
 export default function Layout() {
 

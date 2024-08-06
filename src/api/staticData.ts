@@ -19,7 +19,7 @@ class StaticDataApi {
 
   getDepartmentLinks() {
     return fetcher<DepartmentLink>(() =>
-      fetch(`${STATIC_API_URL}/department-links.json`)
+      fetch(`${STATIC_API_URL}/division-links.json`)
     );
   }
 }

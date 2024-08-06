@@ -14,11 +14,11 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import NotFound from './NotFound';
+import NotFound from '../NotFound';
 
-import transferInterviewApi from '../api/transferInterivew';
-import Head from '../components/Head';
-import { useDivisionsStore } from '../store/transferStatistics';
+import transferInterviewApi from '../../api/transferInterivew';
+import Head from '../../components/common/Head';
+import { useDivisionsStore } from '../../store/transferStatistics';
 
 const YEARS = [2020, 2021, 2022, 2023, 2024];
 const GRADES = [2, 3, 4];
@@ -60,7 +60,7 @@ function InterviewWriteForm({ division }: { division: string }) {
       payload.set('year', '');
     }
 
-    if (!confirm('정말로 등록할까요? 수정이 어렵습니다.')) return;
+    if (!confirm('정말로 등록할까요?')) return;
 
     setIsSubmtting(true);
     try {

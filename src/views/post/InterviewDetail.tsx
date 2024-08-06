@@ -1,22 +1,22 @@
 import { Box, Heading, Button, Stack } from "@chakra-ui/react";
 import { useSearchParams, Link } from "react-router-dom";
 
-import NotFound from "./NotFound";
-import InterviewPostCard from "../components/InterviewPostCard";
+import NotFound from "../NotFound";
+import InterviewPostCard from "../../components/post/InterviewPostCard";
 
 import { useAsync } from "react-use";
 
-import transferInterviewApi from "../api/transferInterivew";
-import NoInterviewPost from "../components/NoInterviewPost";
-import Head from "../components/Head";
+import transferInterviewApi from "../../api/transferInterivew";
+import NoInterviewPost from "../../components/post/NoInterviewPost";
+import Head from "../../components/common/Head";
 // import Error from "../components/ErrorBoudary";
-import Loading from "../components/Loading";
+import Loading from "../../components/common/Loading";
 import {
   useDepartmentLinkStore,
   useDivisionsStore,
-} from "../store/transferStatistics";
-import { extractApiAttribues } from "../utils/util";
-import staticDataApi from "../api/staticData";
+} from "../../store/transferStatistics";
+import { extractApiAttribues } from "../../utils/util";
+import staticDataApi from "../../api/staticData";
 import { useEffect } from "react";
 
 export default function InterviewInfoPage() {
@@ -32,15 +32,23 @@ export default function InterviewInfoPage() {
     }
   }, []);
 
-  if (departmentLinks.loading) {
+  if (departmentLinks.isLoading) {
     return <Loading />;
   }
-  if (departmentLinks.error || !departmentLinks.data) {
-    throw new Error("departmentLinks 데이터 로딩 실패");
+  if (departmentLinks.error) {
+    throw new Error(
+      "departmentLinks 로딩 실패\n" + departmentLinks.error.message
+    );
   }
+  if (!departmentLinks.data) return null;
 
-  if (!division) return <NotFound />;
-  if (!divisions.includes(division)) return <NotFound />;
+  if (!division) {
+    return <NotFound />;
+  }
+  if (!divisions.includes(division)) {
+    console.log(divisions, division);
+    return <NotFound />;
+  }
 
   return (
     <>

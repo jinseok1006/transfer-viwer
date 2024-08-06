@@ -2,7 +2,8 @@ import type { InterviewPost } from "../types";
 import { fetcher } from "../utils/util";
 
 // const API_SERVER_URL = import.meta.env.VITE_API_SERVER;
-const API_SERVER_URL = "http://localhost:1337/api";
+
+const API_SERVER_URL = "https://transfer-api.jins.page/api";
 
 export interface ApiResponseBody<T> {
   data: ApiResponseData<T>[];
@@ -70,7 +71,7 @@ class TransferInterviewApi {
     //   }
     // );
   }
-  
+
   getPost(divisionName: string) {
     // return fetcher<ApiResponseBody<InterviewPost>>(
     //   (queryString) =>

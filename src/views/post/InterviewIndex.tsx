@@ -11,19 +11,16 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import InterviewPostCard from "../components/InterviewPostCard";
+import InterviewPostCard from "../../components/post/InterviewPostCard";
 import { Link } from "react-router-dom";
-import NoInterviewPost from "../components/NoInterviewPost";
-
-import Head from "../components/Head";
-import transferInterviewApi from "../api/transferInterivew";
-// import Error from "../components/ErrorBoudary";
-import Loading from "../components/Loading";
-import { useDivisionsStore } from "../store/transferStatistics";
+import NoInterviewPost from "../../components/post/NoInterviewPost";
+import Head from "../../components/common/Head";
+import transferInterviewApi from "../../api/transferInterivew";
+import Loading from "../../components/common/Loading";
+import { useDivisionsStore } from "../../store/transferStatistics";
 
 import { useAsync } from "react-use";
-import { extractApiAttribues } from "../utils/util";
-// import type { InterviewPost } from "../types";
+import { extractApiAttribues } from "../../utils/util";
 
 interface DivisionSearchForm {
   onSubmit: (e: React.FormEvent) => void;

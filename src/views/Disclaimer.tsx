@@ -1,6 +1,6 @@
 import { Heading, Text, Stack, Flex, Link } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import Head from "../components/Head";
+import Head from "../components/common/Head";
 
 const text = [
   `'전북대 전학/전과 현황' 페이지 및 이에 포함된 모든 정보는 일반 정보
@@ -24,7 +24,7 @@ export default function Disclaimer() {
   return (
     <>
       <Head title="면책 조항" />
-      <Heading size="md" mt={6} mb={3}>
+      <Heading as='h1' size="lg" mt={6} mb={3}>
         면책 조항
       </Heading>
       <Stack spacing={3}>

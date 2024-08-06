@@ -17,13 +17,13 @@ import {
   Center,
 } from '@chakra-ui/react';
 
-import { useFilterStateStore } from '../store/filter';
+import { useFilterStateStore } from '../../store/filter';
 
 import {
   useCollegeDivisionStore,
   useTransferStatisticsStore,
-} from '../store/transferStatistics';
-import type { TransferData } from '../store/transferStatistics';
+} from '../../store/transferStatistics';
+import type { TransferData } from '../../store/transferStatistics';
 
 export default function StatCardsContainer() {
   const transferStatisticsData = useTransferStatisticsStore(

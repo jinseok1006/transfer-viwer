@@ -1,5 +1,5 @@
 import { Card, CardBody, Flex, Text, Divider, Box } from "@chakra-ui/react";
-import type { InterviewPost } from "../types";
+import type { InterviewPost } from "../../types";
 
 export const score2Str = {
   private: "비공개",

@@ -1,6 +1,6 @@
 import { Box, Text, Heading, Image, Center, Button } from "@chakra-ui/react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import Head from "../components/Head";
+import Head from "../components/common/Head";
 
 export default function NotFound() {
   const { pathname, search } = useLocation();

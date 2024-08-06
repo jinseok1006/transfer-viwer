@@ -5,7 +5,7 @@ export const extractApiAttribues = <T>(responseBody: ApiResponseBody<T>) =>
   responseBody.data.map((d) => d.attributes);
 
 export async function fetcher<T>(
-  callback: (queryString: string) => Promise<Response>,
+  callback: (queryString?: string, ...args: any[]) => Promise<Response>,
   query?: { [name: string]: any }
 ) {
   const queryString = qs.stringify(query) ?? "";
@@ -13,5 +13,7 @@ export async function fetcher<T>(
   if (!resp.ok) {
     throw new Error(resp.statusText);
   }
+
+  // console.log(await resp.text());
   return resp.json() as T;
 }

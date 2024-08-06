@@ -1,10 +1,12 @@
 import { useRouteError } from "react-router-dom";
 import { Box, Text, Center, Button, Image } from "@chakra-ui/react";
-import Head from "../components/Head";
-import { Link as RouterLink } from "react-router-dom";
+import Head from "./Head";
+import { useNavigate } from "react-router-dom";
 
 export default function ErrorBoudary() {
   const error = useRouteError() as Error;
+  const navigate = useNavigate();
+
   // console.error(error);
 
   // return (
@@ -26,8 +28,8 @@ export default function ErrorBoudary() {
           {error.message}
         </Text>
         <Center mt={12}>
-          <Button as={RouterLink} colorScheme="teal" w="160px" to="/">
-            메인으로
+          <Button colorScheme="teal" w="160px" onClick={() => navigate(-1)}>
+            뒤로가기
           </Button>
         </Center>
       </Box>
