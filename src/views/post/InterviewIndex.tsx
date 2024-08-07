@@ -129,6 +129,7 @@ function NewestInterviewPosts() {
             score,
             hasTakenCourse,
             content,
+            isScorePrivate
           },
           i
         ) => (
@@ -141,6 +142,7 @@ function NewestInterviewPosts() {
             score={score}
             hasTakenCourse={hasTakenCourse}
             content={content}
+            isScorePrivate={isScorePrivate}
           />
         )
       )}

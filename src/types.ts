@@ -1,11 +1,13 @@
 export interface InterviewPost {
   department: string;
-  year?: number;
-  isYearPrivate: boolean;
+  year?: number | "private";
   grade: number;
-  score: "early4" | "late4" | "early3" | "mid3" | "late3" | "less3" | "private";
+  score?: "early4" | "late4" | "early3" | "mid3" | "late3" | "less3" | "private";
   hasTakenCourse: boolean;
   content: string;
+  isYearPrivate: boolean;
+  isScorePrivate: boolean;
+
 }
 
 

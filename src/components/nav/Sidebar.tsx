@@ -13,12 +13,12 @@ import {
   Flex,
   Spacer,
   Box,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { Link as RouterLink } from 'react-router-dom';
-import { CloseIcon } from '@chakra-ui/icons';
+import { Link as RouterLink } from "react-router-dom";
+import { CloseIcon } from "@chakra-ui/icons";
 
-import SidebarLinks from './SidebarLinks';
+import SidebarLinks from "./SidebarLinks";
 
 interface SidebarContainerProps {
   isOpen: boolean;
@@ -30,7 +30,7 @@ export default function SidebarContainer({
   onClose,
 }: SidebarContainerProps) {
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} >
+    <Drawer isOpen={isOpen} onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader>
@@ -54,15 +54,15 @@ interface SidebarHeaderProps {
 }
 function SidebarHeader({ onClose }: SidebarHeaderProps) {
   return (
-    <Flex alignItems='center'>
-      <Heading fontWeight='bold' fontSize='xl'>
+    <Flex alignItems="center">
+      <Heading fontWeight="bold" fontSize="xl">
         메뉴
       </Heading>
       <Spacer />
       <IconButton
         icon={<CloseIcon />}
-        aria-label='close'
-        variant='ghost'
+        aria-label="close"
+        variant="ghost"
         onClick={onClose}
       />
     </Flex>
@@ -73,21 +73,27 @@ interface SidebarFooterProps {
   onClose: () => void;
 }
 function SidebarFooter({ onClose }: SidebarFooterProps) {
-  const mailString = `forstackup@gmail.com`;
+  const githubUrl = "https://github.com/jinseok1006/transfer-viewer";
+  const openkakaoUrl = "https://open.kakao.com/o/";
   return (
-    <Box color='gray.500' fontSize='xs'>
+    <Box color="gray.500" fontSize="xs">
       <Text>
-        Contact:{' '}
-        <Link href={`mailto:${mailString}`} textDecoration='underline'>
-          {mailString}
+        문의:{" "}
+        <Link href={openkakaoUrl} textDecoration="underline">
+          오픈카톡
+        </Link>
+        {" "}
+        <Link href={githubUrl} textDecoration="underline">
+          깃허브
         </Link>
       </Text>
+
       <Text>
-        본 페이지를 이용하는 경우{' '}
+        본 페이지를 이용하는 경우{" "}
         <Link
           as={RouterLink}
-          to='/disclaimer'
-          textDecoration='underline'
+          to="/disclaimer"
+          textDecoration="underline"
           onClick={onClose}
         >
           면책 조항

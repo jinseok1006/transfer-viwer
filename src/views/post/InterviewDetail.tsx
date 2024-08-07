@@ -157,6 +157,7 @@ function InterviewInfo({ division: department }: { division: string }) {
               score,
               hasTakenCourse,
               content,
+              isScorePrivate
             },
             i
           ) => (
@@ -169,6 +170,7 @@ function InterviewInfo({ division: department }: { division: string }) {
               score={score}
               hasTakenCourse={hasTakenCourse}
               content={content}
+              isScorePrivate={isScorePrivate}
             />
           )
         )}

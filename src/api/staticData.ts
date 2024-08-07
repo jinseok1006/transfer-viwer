@@ -1,8 +1,8 @@
 import { DepartmentLink } from "../types";
 import { fetcher } from "../utils/util";
 
-const STATIC_API_URL = "https://transfer-parser.jins.page";
-// const STATIC_API_URL = import.meta.env.VITE_STATIC_API_URL;
+// const STATIC_API_URL = "https://transfer-parser.jins.page";
+const STATIC_API_URL = import.meta.env.VITE_STATIC_API_URL;
 
 class StaticDataApi {
   getCollegeDivisions() {

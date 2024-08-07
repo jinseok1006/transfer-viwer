@@ -19,6 +19,7 @@ export default function InterviewPostCard({
   score,
   hasTakenCourse,
   content,
+  isScorePrivate
 }: InterviewPost) {
   
   return (
@@ -43,7 +44,7 @@ export default function InterviewPostCard({
             <Text fontWeight="bold" flexBasis="34%">
               평균평점
             </Text>
-            <Text flex="1">{score2Str[score]}</Text>
+            <Text flex="1">{!score ? "비공개" : score2Str[score]}</Text>
           </Flex>
           <Flex>
             <Text fontWeight="bold" flexBasis="34%">

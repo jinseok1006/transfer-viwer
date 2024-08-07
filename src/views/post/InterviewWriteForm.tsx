@@ -5,22 +5,19 @@ import {
   Select,
   RadioGroup,
   Radio,
-  Card,
-  CardBody,
   Button,
   Wrap,
   Textarea,
   FormControl,
   FormLabel,
-  useRadioGroup,
 } from "@chakra-ui/react";
-import { useSearchParams, useNavigate, Form } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import NotFound from "../NotFound";
 
 import transferInterviewApi from "../../api/transferInterivew";
 import Head from "../../components/common/Head";
 import { useDivisionsStore } from "../../store/transferStatistics";
-import RadioCard from "../../ui/RadioCard";
+import { InterviewPost } from "../../types";
 
 const YEARS = [2020, 2021, 2022, 2023, 2024];
 const GRADES = [2, 3, 4];
@@ -44,16 +41,6 @@ export default function InterviewWriteFormPage() {
   );
 }
 
-interface InterviewPostSubmitBody {
-  department: string;
-  year?: string;
-  grade: string;
-  score?: string;
-  hasTakenCourse: string;
-  content: string;
-  isYearPrivate: boolean;
-  isScorePrivate: boolean;
-}
 
 function InterviewWriteForm({ division }: { division: string }) {
   const navigate = useNavigate();
@@ -75,7 +62,7 @@ function InterviewWriteForm({ division }: { division: string }) {
 
     const payload = Array.from(formData).reduce(
       (acc, [key, value]) => ({ ...acc, [key]: value }),
-      {} as InterviewPostSubmitBody
+      {} as InterviewPost
     );
 
     if (payload.score === "private") {

@@ -1,9 +1,9 @@
 import type { InterviewPost } from "../types";
 import { fetcher } from "../utils/util";
 
-// const API_SERVER_URL = import.meta.env.VITE_API_SERVER;
+const API_SERVER_URL = import.meta.env.VITE_API_SERVER;
 
-const API_SERVER_URL = "https://transfer-api.jins.page/api";
+// const API_SERVER_URL = "https://transfer-api.jins.page/api";
 
 export interface ApiResponseBody<T> {
   data: ApiResponseData<T>[];
@@ -39,7 +39,7 @@ class TransferInterviewApi {
       (queryString) =>
         fetch(`${API_SERVER_URL}/interview-posts?${queryString}`),
       {
-         sort: "createdAt:desc",
+        sort: "createdAt:desc",
         filters: {
           department: {
             $in: departments,
