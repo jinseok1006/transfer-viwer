@@ -1,6 +1,8 @@
-import { create } from 'zustand';
-import createAsync from '../utils/createAsync';
-import { getCollegeDivisions, getTransferStatistics } from '../api/static-data';
+import { create } from "zustand";
+import createAsync from "../utils/createAsync";
+import staticDataApi from "../api/staticData";
+
+import type { DepartmentLink } from "../types";
 
 export interface TransferStatistics {
   division: string;
@@ -23,17 +25,22 @@ interface DivisionsState {
   update: (divisions: string[]) => void;
 }
 
-export const useCollegeDivisionStore =
-  createAsync<CollegeDivision[]>(getCollegeDivisions);
+export const useCollegeDivisionStore = createAsync<CollegeDivision[]>(
+  staticDataApi.getCollegeDivisions
+);
 
 export const useTransferStatisticsStore = createAsync<TransferStatistics[]>(
-  getTransferStatistics
+  staticDataApi.getTransferStatistics
 );
 
 export const useDivisionsStore = create<DivisionsState>()((set) => ({
   divisions: [],
   update: (divisions: string[]) => set({ divisions }),
 }));
+
+export const useDepartmentLinkStore = createAsync<DepartmentLink>(
+  staticDataApi.getDepartmentLinks
+);
 
 // getDivisions
 useCollegeDivisionStore.subscribe((state) => {

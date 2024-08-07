@@ -14,7 +14,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: '#fafafa',
+        bg: 'blackAlpha.50',
       },
     },
   },

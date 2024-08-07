@@ -1,8 +1,9 @@
-import { Box } from '@chakra-ui/react';
-import { Helmet } from 'react-helmet-async';
+import { Box } from "@chakra-ui/react";
+import { Helmet } from "react-helmet-async";
 
-import Filter from '../components/Filter';
-import StatCardsContainer from '../components/StatsCards';
+import Filter from "../components/stat/Filter";
+import StatCardsContainer from "../components/stat/StatsCards";
+
 
 export default function TransferViewer() {
   return (
@@ -12,7 +13,6 @@ export default function TransferViewer() {
       </Helmet>
       <Box mt={4}>
         <Filter />
-
         <StatCardsContainer />
       </Box>
     </>

@@ -1,28 +1,33 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export interface AsyncState<T> {
-  loading: boolean;
-  data: null | T;
-  error: unknown;
+  isLoading: boolean;
+  data: T | null;
+  error: Error | null;
+  // fetchData: () => void;
+}
+
+interface AsyncStateStore<T> extends AsyncState<T> {
   fetchData: () => void;
 }
 
-export default function createAsync<T>(fetchData: () => Promise<Response>) {
-  return create<AsyncState<T>>()((set) => ({
-    loading: false,
+export default function createAsync<T>(
+  callback: (...args: any[]) => Promise<T>
+) {
+  const store = create<AsyncStateStore<T>>()((set) => ({
+    isLoading: false,
     data: null,
     error: null,
     fetchData: async () => {
-      set({ loading: true, error: null });
+      set({ isLoading: true, error: null });
       try {
-        const response = await fetchData();
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message);
-
-        set({ loading: false, data: data, error: null });
-      } catch (err) {
-        set({ loading: false, data: null, error: err });
+        const data = await callback();
+        set({ isLoading: false, data: data, error: null });
+      } catch (error) {
+        set({ isLoading: false, data: null, error: error as Error });
       }
     },
   }));
+
+  return store;
 }
