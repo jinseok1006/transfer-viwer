@@ -30,7 +30,7 @@ export default function SidebarContainer({
   onClose,
 }: SidebarContainerProps) {
   return (
-    <Drawer isOpen={isOpen} onClose={onClose}>
+    <Drawer isOpen={isOpen} onClose={onClose} >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader>
@@ -82,7 +82,6 @@ function SidebarFooter({ onClose }: SidebarFooterProps) {
           {mailString}
         </Link>
       </Text>
-      {/* <Text>Last updated on {new Date().toString()}</Text> */}
       <Text>
         본 페이지를 이용하는 경우{' '}
         <Link

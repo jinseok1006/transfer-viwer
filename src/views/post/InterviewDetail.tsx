@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Heading, Button, Stack } from "@chakra-ui/react";
 import { useSearchParams, Link } from "react-router-dom";
 
@@ -16,7 +17,7 @@ import {
   useDivisionsStore,
 } from "../../store/transferStatistics";
 import { extractApiAttribues } from "../../utils/util";
-import staticDataApi from "../../api/staticData";
+
 import { useEffect } from "react";
 
 export default function InterviewInfoPage() {
@@ -88,59 +89,90 @@ function InterviewInfoContainer({ division }: { division: string }) {
       <Heading size="md" my={4}>
         {division}
       </Heading>
-      {/* <InterviewInfo division={division} /> */}
+      <InterviewInfo division={division} />
     </>
   );
 }
 
 function InterviewInfo({ division: department }: { division: string }) {
-  //   const departmentLinksState = useAsync(getDepartmentLinks);
-  //   const departmentLinks = departmentLinksState.value;
-  //   const relatedDepartments = departmentLinks[division];
-  //   const { loading, error, value } = useAsync(
-  //     () => fetchInterviewPostByDepartments(relatedDepartments),
-  //     [relatedDepartments]
-  //   );
-  //   if(departmentLinksState.error || !departmentLinksState.value ) {
-  //     return <Error error={departmentLinksState.error} />;
-  //   }
-  //   if (departmentLinksState.loading) {
-  //     return <Loading />;
-  //   }
-  //   // const departmentLinks = departmentLinksState.value;
-  //   // const relatedDepartments = departmentLinks[division];
-  //   if (error || !value) {
-  //     return <Error error={error} />;
-  //   }
-  //   if (loading) {
-  //     return <Loading />;
-  //   }
-  //   const interviewPosts = extractApiAttribues(value);
-  //   // console.log('success');
-  //   if (interviewPosts.length === 0) {
-  //     return <NoInterviewPost />;
-  //   }
-  //   return (
-  //     <>
-  //       <Stack direction="column" spacing={5}>
-  //         {interviewPosts.map(
-  //           (
-  //             { department, year, isYearPrivate, grade, score,  hasTakenCourse, content },
-  //             i
-  //           ) => (
-  //             <InterviewPostCard
-  //               key={i}
-  //               department={department}
-  //               isYearPrivate={isYearPrivate}
-  //               year={year}
-  //               grade={grade}
-  //               score={score}
-  //               hasTakenCourse={hasTakenCourse}
-  //               content={content}
-  //             />
-  //           )
-  //         )}
-  //       </Stack>
-  //     </>
-  //   );
+  const [relatedDepartments, setRelatedDepartments] = useState<string[]>([]);
+  const {
+    data: departmentLinks,
+    isLoading: departmentLinksLoading,
+    error: departmentLinksError,
+    fetchData: fetchDepartmentLinks,
+  } = useDepartmentLinkStore();
+  const {
+    loading: postsLoading,
+    error: postsError,
+    value: postsData,
+  } = useAsync(() => {
+    // null의 의미 다시 생각해볼것..
+    if (!relatedDepartments.length) return Promise.resolve(null);
+    // TODO: 어차피 본인학과를 여기서 포함하기 때문에 link를 다시 작성해야겠네요.
+    return transferInterviewApi.getPostByDepartments([
+      department,
+      ...relatedDepartments,
+    ]);
+  }, [relatedDepartments]);
+
+  useEffect(() => {
+    if (!departmentLinks) {
+      fetchDepartmentLinks();
+      return;
+    }
+
+    setRelatedDepartments(departmentLinks[department] || []);
+  }, [department, departmentLinks, fetchDepartmentLinks]);
+
+  if (departmentLinksLoading || postsLoading) {
+    return <Loading />;
+  }
+
+  if (departmentLinksError) {
+    throw new Error(
+      "departmentLinks 로딩 실패\n" + departmentLinksError.message
+    );
+  }
+  if (postsError) {
+    throw new Error("postsState 로딩 실패\n" + postsError.message);
+  }
+
+  if (!departmentLinks || !postsData) return null;
+
+  const posts = extractApiAttribues(postsData);
+
+  if(!posts.length) return <NoInterviewPost />;
+
+  return (
+    <>
+      <Stack direction="column" spacing={5}>
+        {posts.map(
+          (
+            {
+              department,
+              year,
+              isYearPrivate,
+              grade,
+              score,
+              hasTakenCourse,
+              content,
+            },
+            i
+          ) => (
+            <InterviewPostCard
+              key={i}
+              department={department}
+              isYearPrivate={isYearPrivate}
+              year={year}
+              grade={grade}
+              score={score}
+              hasTakenCourse={hasTakenCourse}
+              content={content}
+            />
+          )
+        )}
+      </Stack>
+    </>
+  );
 }

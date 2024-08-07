@@ -39,6 +39,7 @@ class TransferInterviewApi {
       (queryString) =>
         fetch(`${API_SERVER_URL}/interview-posts?${queryString}`),
       {
+         sort: "createdAt:desc",
         filters: {
           department: {
             $in: departments,
@@ -62,28 +63,15 @@ class TransferInterviewApi {
     );
   }
   submitPost(payload: any) {
-    // return fetcher<ApiResponseBody<InterviewPost>>(
-    //   (queryString) =>
-    //     fetch(`${API_SERVER_URL}/interview-posts?${queryString}`),
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify(payload),
-    //   }
-    // );
-  }
-
-  getPost(divisionName: string) {
-    // return fetcher<ApiResponseBody<InterviewPost>>(
-    //   (queryString) =>
-    //     fetch(`${API_SERVER_URL}/interview-posts?${queryString}`),
-    //   {
-    //     filters: {
-    //       division: {
-    //         $eq: divisionName,
-    //       },
-    //     },
-    //   }
-    // );
+    return fetcher<ApiResponseBody<InterviewPost>>(() =>
+      fetch(`${API_SERVER_URL}/interview-posts`, {
+        body: JSON.stringify({ data: payload }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
   }
 }
 

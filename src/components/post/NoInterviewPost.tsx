@@ -5,8 +5,7 @@ export default function NoInterviewPost() {
     <Card my={4}>
       <CardBody>
         <Text>
-          💡 새로운 길을 탐색하는 사람들을 위해 도움이 되는 소중한 글을 기다리고
-          있어요!
+          💡 아직 등록된 글이 없네요. 공유하실 정보가 있으신가요?
         </Text>
       </CardBody>
     </Card>

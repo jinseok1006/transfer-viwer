@@ -9,11 +9,13 @@ export async function fetcher<T>(
   query?: { [name: string]: any }
 ) {
   const queryString = qs.stringify(query) ?? "";
+
   const resp = await callback(queryString);
+  const json = await resp.json();
   if (!resp.ok) {
-    throw new Error(resp.statusText);
+    throw new Error(json.error.message);
   }
 
   // console.log(await resp.text());
-  return resp.json() as T;
+  return json as T;
 }
