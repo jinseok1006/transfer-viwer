@@ -1,3 +1,4 @@
+// import { lazy } from "react";
 import {
   Route,
   createBrowserRouter,
@@ -8,6 +9,7 @@ import {
 import Layout from "./views/Layout";
 import ErrorComponent from "./components/common/ErrorBoudary";
 
+// convert dynamic import following components
 import Disclaimer from "./views/Disclaimer";
 import NotFound from "./views/NotFound";
 import TransferViewer from "./views/TransferViewer";
@@ -16,6 +18,8 @@ import InterviewIndexPage from "./views/post/InterviewIndex";
 import InterviewWriteFormPage from "./views/post/InterviewWriteForm";
 import DataSource from "./views/DataSource";
 import GlobalDataLoader from "./components/GlobalDataLoder";
+
+
 
 const routeElements = (
   <Route path="/" element={<Layout />}>

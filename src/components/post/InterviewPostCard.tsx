@@ -19,9 +19,7 @@ export default function InterviewPostCard({
   score,
   hasTakenCourse,
   content,
-  isScorePrivate
 }: InterviewPost) {
-  
   return (
     <Card>
       <CardBody fontSize="sm">

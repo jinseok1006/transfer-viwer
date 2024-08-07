@@ -1,9 +1,5 @@
-
-
-import { Heading, Button, Card, CardBody, Link ,Text, Box ,} from "@chakra-ui/react";
+import { Heading, Card, CardBody, Link, Box } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-
-
 
 // create data source array using following data
 // 2023: https://www.jbnu.ac.kr/kor/?menuID=139&mode=view&no=51967
@@ -34,11 +30,10 @@ const dataSource = [
   },
 ];
 
-
 export default function DataSource() {
   return (
     <Box mt={4}>
-      <Heading as='h1' size='lg' mb='4'>
+      <Heading as="h1" size="lg" mb="4">
         데이터 출처
       </Heading>
       {/* <Text mb='4'>전북대학교 전학/전과 현황 데이터 출처입니다.</Text> */}
@@ -54,10 +49,12 @@ function DataSourceCard({ year, link }: { year: number; link: string }) {
   return (
     <Card mb={4}>
       <CardBody>
-        <Heading as='h3' size='sm'>{year}학년도</Heading>
+        <Heading as="h3" size="sm">
+          {year}학년도
+        </Heading>
         <Link href={link} isExternal>
           {link}
-          <ExternalLinkIcon mx='2px' />
+          <ExternalLinkIcon mx="2px" />
         </Link>
       </CardBody>
     </Card>

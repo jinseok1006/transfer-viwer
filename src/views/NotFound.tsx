@@ -1,4 +1,4 @@
-import { Box, Text, Heading, Image, Center, Button } from "@chakra-ui/react";
+import { Box, Text, Image, Center, Button } from "@chakra-ui/react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import Head from "../components/common/Head";
 
