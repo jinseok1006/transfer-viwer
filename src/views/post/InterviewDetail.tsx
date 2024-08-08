@@ -106,15 +106,16 @@ function InterviewInfo({ division: department }: { division: string }) {
     loading: postsLoading,
     error: postsError,
     value: postsData,
-  } = useAsync(() => {
-    // null의 의미 다시 생각해볼것..
-    if (!relatedDepartments.length) return Promise.resolve(null);
-    // TODO: 어차피 본인학과를 여기서 포함하기 때문에 link를 다시 작성해야겠네요.
-    return transferInterviewApi.getPostByDepartments([
-      department,
-      ...relatedDepartments,
-    ]);
-  }, [relatedDepartments]);
+  } = useAsync(
+    () =>
+      // 처음에는 내 deparment만 으로 우선 조회,
+      // relatedDepartments가 추가되면 다시 조회
+      transferInterviewApi.getPostByDepartments([
+        department,
+        ...relatedDepartments,
+      ]),
+    [relatedDepartments]
+  );
 
   useEffect(() => {
     if (!departmentLinks) {
@@ -122,7 +123,7 @@ function InterviewInfo({ division: department }: { division: string }) {
       return;
     }
 
-    setRelatedDepartments(departmentLinks[department] || []);
+    setRelatedDepartments(departmentLinks[department] ?? []);
   }, [department, departmentLinks, fetchDepartmentLinks]);
 
   if (departmentLinksLoading || postsLoading) {
@@ -139,10 +140,9 @@ function InterviewInfo({ division: department }: { division: string }) {
   }
 
   if (!departmentLinks || !postsData) return null;
-
   const posts = extractApiAttribues(postsData);
 
-  if(!posts.length) return <NoInterviewPost />;
+  if (!posts.length) return <NoInterviewPost />;
 
   return (
     <>
@@ -157,7 +157,7 @@ function InterviewInfo({ division: department }: { division: string }) {
               score,
               hasTakenCourse,
               content,
-              isScorePrivate
+              isScorePrivate,
             },
             i
           ) => (
